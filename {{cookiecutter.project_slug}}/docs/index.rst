@@ -1,21 +1,24 @@
 Welcome to {{ cookiecutter.project_name }}'s documentation!
 ======================================
 
-Contents:
+.. include:: ../README.rst
 
-.. toctree::
-   :maxdepth: 2
+Command Line Interface
+----------------------
 
-   readme
-   installation
-   usage
-   modules
-   contributing
-   {% if cookiecutter.create_author_file == 'y' -%}authors
-   {% endif -%}history
+.. include:: ../{{ cookiecutter.project_slug }}/cli.py
+    :start-after: """
+    :end-before: """
+    :literal:
+
+API Documentation
+-----------------
+
+.. include:: modules.rst
+    :start-line: 2
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

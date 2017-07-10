@@ -1,0 +1,107 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "d0d2c47c729d890f4dfb04c1e99e46c89b67b1f587d12c2dde60167ab6896024"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "alabaster": {
+            "version": "==0.7.8"
+        },
+        "argh": {
+            "version": "==0.26.2"
+        },
+        "arrow": {
+            "version": "==0.10.0"
+        },
+        "binaryornot": {
+            "version": "==0.4.3"
+        },
+        "cffi": {
+            "version": "==1.10.0"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "click": {
+            "version": "==6.7"
+        },
+        "cookiecutter": {
+            "version": "==1.5.1"
+        },
+        "cryptography": {
+            "version": "==1.7"
+        },
+        "future": {
+            "version": "==0.16.0"
+        },
+        "idna": {
+            "version": "==2.5"
+        },
+        "jinja2": {
+            "version": "==2.9.6"
+        },
+        "jinja2-time": {
+            "version": "==0.2.0"
+        },
+        "markupsafe": {
+            "version": "==1.0"
+        },
+        "pathtools": {
+            "version": "==0.1.2"
+        },
+        "pluggy": {
+            "version": "==0.3.1"
+        },
+        "poyo": {
+            "version": "==0.4.1"
+        },
+        "py": {
+            "version": "==1.4.34"
+        },
+        "pyasn1": {
+            "version": "==0.2.3"
+        },
+        "pycparser": {
+            "version": "==2.18"
+        },
+        "pytest": {
+            "version": "==3.1.2"
+        },
+        "pytest-cookies": {
+            "version": "==0.2.0"
+        },
+        "python-dateutil": {
+            "version": "==2.6.0"
+        },
+        "pyyaml": {
+            "version": "==3.12"
+        },
+        "setuptools": {
+            "version": "==36.0.1"
+        },
+        "six": {
+            "version": "==1.10.0"
+        },
+        "tox": {
+            "version": "==2.3.1"
+        },
+        "virtualenv": {
+            "version": "==15.1.0"
+        },
+        "watchdog": {
+            "version": "==0.8.3"
+        },
+        "whichcraft": {
+            "version": "==0.4.1"
+        }
+    },
+    "develop": {}
+}

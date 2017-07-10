@@ -1,17 +1,22 @@
-# -*- coding: utf-8 -*-
+"""{{ cookiecutter.project_slug }} v{{ cookiecutter.version }}
 
-"""Console script for {{cookiecutter.project_slug}}."""
+{{ cookiecutter.project_short_description }}
 
-import click
+Usage:
+    {{cookiecutter.project_slug }} [options] <argument>
+    {{cookiecutter.project_slug }} -h | --help
+    {{cookiecutter.project_slug }} -V | --version
+
+Options:
+    -h --help                 show help and exit
+    -V --version              show version and exit
+"""
+from docopt import docopt
 
 
-@click.command()
-def main(args=None):
-    """Console script for {{cookiecutter.project_slug}}."""
-    click.echo("Replace this message by putting your code into "
-               "{{cookiecutter.project_slug}}.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
-
+def main(argv=None):
+    args = docopt(__doc__, argv=argv, version='{{ cookiecutter.version }}')
+    print(args)
 
 if __name__ == "__main__":
     main()
