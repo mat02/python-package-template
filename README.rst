@@ -45,6 +45,18 @@ Then:
 * Install the dev requirements into a virtualenv. ``pipenv install --dev``) || ``pip install .[dev]``
 * Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
 
+Upon creating your project, these are some of the options that will be available to you via the generated fabfile.
+Prepend ``fab`` to the following commands from project root:
+
+    clean                 Remove all build, test, coverage and Python artifacts.
+    coverage              Check code coverage quickly with the default Python.
+    docs                  Generage Sphinx HTML documentation, including API docs.
+    gen_requirements_txt  Generate a requirements.txt from Fabfile.
+    publish_docs          Compile docs and publish to GitHub Pages.
+    release               Package and upload a release to pypi.
+    test                  Run tests quickly with default Python.
+    test_all              Run on multiple Python versions with tox.
+
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
 

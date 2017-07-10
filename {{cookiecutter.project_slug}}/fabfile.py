@@ -130,7 +130,7 @@ def dist():
 
 @task
 def release():
-    """Package and upload a release."""
+    """Package and upload a release to pypi."""
     clean()
     test_all()
     publish_docs()
