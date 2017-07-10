@@ -1,10 +1,6 @@
 =============================
-Python 3 package cookiecutter
+Python 3 Package Cookiecutter
 =============================
-
-.. image:: https://pyup.io/repos/github/knowsuchagency/cookiecutter-pypackage/shield.svg
-     :target: https://pyup.io/repos/github/knowsuchagency/cookiecutter-pypackage/
-     :alt: Updates
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
