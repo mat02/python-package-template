@@ -1,10 +1,10 @@
 {
-  "full_name": "Audrey Roy Greenfeld",
-  "email": "aroy@alum.mit.edu",
-  "github_username": "audreyr",
+  "full_name": "Stephan Fitzpatrick",
+  "email": "knowsuchagency@gmail.com",
+  "github_username": "knowsuchagency",
   "project_name": "Python Boilerplate",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
   "pypi_username": "{{ cookiecutter.github_username }}",
-  "version": "0.1.0",
+  "version": "0.1.0"
 }
