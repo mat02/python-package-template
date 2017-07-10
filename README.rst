@@ -48,6 +48,8 @@ Then:
 Upon creating your project, these are some of the options that will be available to you via the generated fabfile.
 Prepend ``fab`` to the following commands from project root:
 
+.. code-block:: bash
+
     clean                 Remove all build, test, coverage and Python artifacts.
     coverage              Check code coverage quickly with the default Python.
     docs                  Generage Sphinx HTML documentation, including API docs.
