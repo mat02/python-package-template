@@ -44,7 +44,7 @@ Generate a Python package project::
 
 Then:
 
-* Create a repo and put it there.
+* Create a GitHub repo for your generated project.
 * Add the repo to your Travis-CI_ account.
 * Install the dev requirements into a virtualenv. ``pipenv install --dev``) || ``pip install .[dev]``
 * Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
@@ -65,5 +65,5 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`fabric`: http://www.fabfile.org/
 .. _`docopt`: https://github.com/docopt/docopt
 .. _`github pages`: https://pages.github.com/
-.. _`cookiecutter-package`: https://github.com/audreyr/cookiecutter-pypackage
+.. _`cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Click`: http://click.pocoo.org/

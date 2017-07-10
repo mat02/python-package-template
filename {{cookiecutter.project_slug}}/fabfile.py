@@ -139,7 +139,7 @@ def release():
 
 
 @task
-def gen_requirements_txt():
+def gen_requirements_txt(with_dev=True):
     """
     Generate a requirements.txt from Fabfile.
 
@@ -153,7 +153,10 @@ def gen_requirements_txt():
     pip_config.read('Pipfile')
     requirements_file = Path('requirements.txt')
     packages = []
-    for item in pip_config.items('packages'):
+    items = pip_config.items('packages')
+    if true(with_dev) and pip_config.has_section('dev-packages'):
+        items.extend(pip_config.items('dev-packages'))
+    for item in items:
         lib, version = item
         lib, version = lib.strip('"'), version.strip('"')
         # ungracefully handle wildcard requirements
