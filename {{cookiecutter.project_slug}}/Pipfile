@@ -3,9 +3,7 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
-{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
-docopt = "==0.6.2"
-{% endif %}
+{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}docopt = "==0.6.2"{% endif %}
 
 [dev-packages]
 bumpversion = "==0.5.3"
