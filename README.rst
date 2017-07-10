@@ -12,7 +12,6 @@ A dead-simple and opinionated cookiecutter for modern Python 3 packages.
 
 Adapted from Audrey's cookiecutter-pypackage_
 
-* GitHub repo: https://github.com/knowsuchagency/cookiecutter-pypackage/
 
 Features
 --------
@@ -47,8 +46,8 @@ Then:
 
 * Create a repo and put it there.
 * Add the repo to your Travis-CI_ account.
-* Install the dev requirements into a virtualenv. (``pipenv install --all``) or (``pip install .[dev]``)
-* Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements file from Fabfile.
+* Install the dev requirements into a virtualenv. ``pipenv install --dev``) || ``pip install .[dev]``
+* Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
 
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
