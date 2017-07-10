@@ -6,7 +6,7 @@ Cookiecutter PyPackage
      :target: https://pyup.io/repos/github/knowsuchagency/cookiecutter-pypackage/
      :alt: Updates
 
-Cookiecutter_ template for a Python package.
+Cookiecutter_ template for a Python 3 package.
 
 * GitHub repo: https://github.com/knowsuchagency/cookiecutter-pypackage/
 * Free software: MIT license
@@ -14,12 +14,14 @@ Cookiecutter_ template for a Python package.
 Features
 --------
 
-* Testing setup with ``unittest`` and ``python setup.py test`` or ``py.test``
+* Testing setup with ``py.test``
 * Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test for Python 3.5, 3.6
 * Sphinx_ docs: Documentation ready for generation and hosting on github pages
 * Bumpversion_: Pre-configured version bumping with a single command
-* Command line interface using Docopt
+* Fabric_ for task automation
+* Future-proof use of Pipfile_ as opposed to requirements.txt
+* Command line interface using Docopt_
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 
@@ -103,3 +105,6 @@ make my own packaging experience better.
 .. _github comparison view: https://github.com/tony/cookiecutter-pypackage-pythonic/compare/audreyr:master...master
 .. _`network`: https://github.com/audreyr/cookiecutter-pypackage/network
 .. _`family tree`: https://github.com/audreyr/cookiecutter-pypackage/network/members
+.. _`pipfile`: https://github.com/pypa/pipfile
+.. _`fabric`: http://www.fabfile.org/
+.. _`docopt`: https://github.com/docopt/docopt
