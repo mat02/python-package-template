@@ -3,12 +3,7 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
-PyYAML = "*"
 pytest = "*"
 tox = "*"
-cryptography = "*"
 cookiecutter = "*"
-pytest-cookies = "*"
-watchdog = "*"
-alabaster = "*"
 Fabric3 = "*"

@@ -11,6 +11,7 @@ def get_requirements(section: str) -> list:
     """Read requirements from Pipfile."""
     pip_config = ConfigParser()
     pip_config.read('Pipfile')
+
     def gen():
         for item in pip_config.items(section):
             lib, version = item
@@ -18,7 +19,9 @@ def get_requirements(section: str) -> list:
             # ungracefully handle wildcard requirements
             if version == '*': version = ''
             yield lib + version
+
     return list(gen())
+
 
 packages = get_requirements('packages')
 dev_packages = get_requirements('dev-packages')
@@ -26,12 +29,14 @@ dev_packages = get_requirements('dev-packages')
 setup(
     install_requires=packages,
     tests_require=dev_packages,
+    extras_require={
+        'dev': dev_packages,
+    },
+    {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
     entry_points={
         'console_scripts': [
             '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
         ]
     },
-extras_require={
-        'dev': dev_packages,
-    },
+    {% endif %}
 )
