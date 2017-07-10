@@ -19,12 +19,12 @@ Features
 * Testing setup with ``py.test``
 * Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test for Python 3.5, 3.6
-* Sphinx_ docs: Documentation ready for generation and hosting on `github pages`_
+* Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
 * Fabric_ for task automation
 * Future-proof use of Pipfile_ as opposed to requirements.txt
 * Optional command line interface with Docopt_.
-  The cli module's docstring is automatically added to project documentation via sphinx_.
+  The cli module's docstring is automatically added to project documentation via Sphinx_.
   More robust cli applications may want to check out Click_
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
