@@ -99,10 +99,23 @@ def publish_docs():
 
     Logic borrowed from `hugo <https://gohugo.io/tutorials/github-pages-blog/>`
     """
+    from textwrap import dedent
+
     with settings(warn_only=True):
         if local('git diff-index --quiet HEAD --').failed:
             local('git status')
             abort('The working directory is dirty. Please commit any pending changes.')
+
+        if local('git show-ref refs/heads/gh-pages').failed:
+            # initialized github pages branch
+            local(dedent("""
+                git checkout --orphan gh-pages
+                git reset --hard
+                git commit --allow-empty -m "Initializing gh-pages branch"
+                git push gh-pages
+                git checkout master
+                """).strip())
+            print('created github pages branch')
 
     # deleting old publication
     local('rm -rf public')
@@ -110,14 +123,14 @@ def publish_docs():
     local('git worktree prune')
     local('rm -rf .git/worktrees/public/')
     # checkout out gh-pages branch into public
-    local('git worktree add -B gh-pages public {{ cookiecutter.project_slug }}/gh-pages')
+    local('git worktree add -B gh-pages public gh-pages')
     # generating docs
     docs(open_browser=False)
     # push to github
     with lcd('public'), settings(warn_only=True):
         local('git add .')
         local('git commit -m "Publishing to gh-pages (Fabfile)"')
-        local('git push gh-pages')
+        local('git gh-pages')
 
 
 @task
