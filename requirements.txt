@@ -1,4 +1,0 @@
-pytest
-tox
-cookiecutter
-fabric3
