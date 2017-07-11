@@ -60,3 +60,6 @@ target/
 
 # pyenv python configuration file
 .python-version
+
+# ignore public folder used to host documentation on github pages
+public/
