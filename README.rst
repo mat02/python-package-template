@@ -4,7 +4,7 @@ Python 3 Package Cookiecutter
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
-A opinionated, dead-simple Cookiecutter_ for modern Python 3 packages.
+An opinionated, dead-simple cookiecutter_ for modern Python 3 packages.
 
 *Adapted from Audrey's cookiecutter-pypackage_*
 
