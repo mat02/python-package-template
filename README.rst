@@ -4,7 +4,7 @@ Python 3 Package Cookiecutter
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
-A dead-simple and opinionated cookiecutter_ for modern Python 3 packages.
+A dead-simple and opinionated `cookiecutter`_ for modern Python 3 packages.
 
 *Adapted from Audrey's cookiecutter-pypackage_*
 
@@ -42,6 +42,7 @@ Install the necessary tools to work on your project
 
 .. code-block:: bash
 
+    cd your_project
     pipenv install -d # if using pipenv
     pip install .[dev] # if using legacy Python tooling
 
@@ -68,7 +69,6 @@ Additional Options
 * Create a GitHub repo for your generated project.
 * Add the repo to your Travis-CI_ account.
 * Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
-
 
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
