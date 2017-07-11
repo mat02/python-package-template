@@ -4,7 +4,7 @@ Python 3 Package Cookiecutter
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
-A dead-simple and opinionated Cookiecutter_ for modern Python 3 packages.
+A opinionated, dead-simple Cookiecutter_ for modern Python 3 packages.
 
 *Adapted from Audrey's cookiecutter-pypackage_*
 
@@ -61,6 +61,13 @@ Prepend ``fab`` to the following commands from project root:
     release               Package and upload a release to pypi.
     test                  Run tests quickly with default Python.
     test_all              Run on multiple Python versions with tox.
+
+Upon pushing your project to github, I suggest immediately running
+
+    fab publish_docs
+
+and navigating to http://{your_github_username}.github.io/{repo_name} to witness your documentation
+immediately rendered and available in all its glory. Cool stuff.
 
 Additional Options
 ------------------
