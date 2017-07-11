@@ -4,21 +4,21 @@ Python 3 Package Cookiecutter
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
-A dead-simple and opinionated cookiecutter for modern Python 3 packages.
+A dead-simple and opinionated cookiecutter_ for modern Python 3 packages.
 
-Adapted from Audrey's cookiecutter-pypackage_
+*Adapted from Audrey's cookiecutter-pypackage_*
 
 
 Features
 --------
 
 * Testing setup with ``py.test``
+* Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
 * Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test for Python 3.5, 3.6
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
 * Fabric_ for task automation
-* Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
 * Optional command line interface with Docopt_.
   The cli module's docstring is automatically added to project documentation via Sphinx_.
   More robust cli applications may want to check out Click_
@@ -38,15 +38,17 @@ Generate a Python package project::
 
     cookiecutter https://github.com/knowsuchagency/cookiecutter-pypackage.git
 
-Then:
+Install the necessary tools to work on your project
 
-* Create a GitHub repo for your generated project.
-* Add the repo to your Travis-CI_ account.
-* Install the dev requirements into a virtualenv. ``pipenv install --dev``) || ``pip install .[dev]``
-* Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
+.. code-block:: bash
+
+    pipenv install -d # if using pipenv
+    pip install .[dev] # if using legacy Python tooling
+
+Development
+-----------
 
 Upon creating your project, these are some of the options fabric_ will provide via the generated fabfile.
-
 Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
@@ -59,6 +61,14 @@ Prepend ``fab`` to the following commands from project root:
     release               Package and upload a release to pypi.
     test                  Run tests quickly with default Python.
     test_all              Run on multiple Python versions with tox.
+
+Additional Options
+------------------
+
+* Create a GitHub repo for your generated project.
+* Add the repo to your Travis-CI_ account.
+* Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
+
 
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
@@ -79,3 +89,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
+.. _`cookiecutter`: https://cookiecutter.readthedocs.io/en/latest/
