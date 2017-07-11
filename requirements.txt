@@ -1,4 +1,4 @@
 pytest
 tox
 cookiecutter
-fabric3
+fabric3==1.13.1.post1
