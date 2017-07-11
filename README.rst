@@ -64,9 +64,11 @@ Prepend ``fab`` to the following commands from project root:
 
 Upon pushing your project to github, I suggest immediately running
 
+.. code-block:: bash
+
     fab publish_docs
 
-and navigating to http://{your_github_username}.github.io/{repo_name} to witness your documentation
+and navigating to ``http://{your_github_username}.github.io/{repo_name}`` to witness your documentation
 immediately rendered and available in all its glory. Cool stuff.
 
 Additional Options
