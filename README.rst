@@ -4,7 +4,7 @@ Python 3 Package Cookiecutter
 
 .. image:: https://img.shields.io/github/license/mashape/apistatus.svg
 
-A dead-simple and opinionated `cookiecutter`_ for modern Python 3 packages.
+A dead-simple and opinionated Cookiecutter_ for modern Python 3 packages.
 
 *Adapted from Audrey's cookiecutter-pypackage_*
 
@@ -22,9 +22,6 @@ Features
 * Optional command line interface with Docopt_.
   The cli module's docstring is automatically added to project documentation via Sphinx_.
   More robust cli applications may want to check out Click_
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-
 
 Quickstart
 ----------
@@ -49,7 +46,9 @@ Install the necessary tools to work on your project
 Development
 -----------
 
-Upon creating your project, these are some of the options fabric_ will provide via the generated fabfile.
+Upon creating your project and installing the requirements necessary for development, these are some of the options fabric_
+will provide via the generated fabfile.
+
 Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
@@ -70,18 +69,15 @@ Additional Options
 * Add the repo to your Travis-CI_ account.
 * Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
 
-
 For more details, see the `cookiecutter-pypackage tutorial`_.
 
 .. _`cookiecutter-pypackage tutorial`: https://cookiecutter-pypackage.readthedocs.io/en/latest/tutorial.html
-
 .. _Travis-CI: http://travis-ci.org/
 .. _Tox: http://testrun.org/tox/
 .. _Sphinx: http://sphinx-doc.org/
 .. _`pyup.io`: https://pyup.io/
 .. _Bumpversion: https://github.com/peritus/bumpversion
 .. _PyPi: https://pypi.python.org/pypi
-
 .. _`pipfile`: https://github.com/pypa/pipfile
 .. _`fabric`: http://www.fabfile.org/
 .. _`docopt`: https://github.com/docopt/docopt
@@ -89,4 +85,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
-.. _`cookiecutter`: https://cookiecutter.readthedocs.io/en/latest/
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
