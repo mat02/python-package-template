@@ -1,4 +1,4 @@
 pytest
-tox
+tox==2.7.0
 cookiecutter
 fabric3
