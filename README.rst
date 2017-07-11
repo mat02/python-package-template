@@ -18,7 +18,7 @@ Features
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
 * Fabric_ for task automation
-* Future-proof use of Pipfile_ as opposed to requirements.txt
+* Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
 * Optional command line interface with Docopt_.
   The cli module's docstring is automatically added to project documentation via Sphinx_.
   More robust cli applications may want to check out Click_
@@ -78,3 +78,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`github pages`: https://pages.github.com/
 .. _`cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Click`: http://click.pocoo.org/
+.. _`pipenv`: http://docs.pipenv.org/en/latest/
