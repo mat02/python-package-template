@@ -45,7 +45,8 @@ Then:
 * Install the dev requirements into a virtualenv. ``pipenv install --dev``) || ``pip install .[dev]``
 * Activate your project on `pyup.io`_. Use ``fab gen_requirements_txt`` to generate requirements.txt from Pipfile.
 
-Upon creating your project, these are some of the options that will be available to you via the generated fabfile.
+Upon creating your project, these are some of the options fabric_ will provide via the generated fabfile.
+
 Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
