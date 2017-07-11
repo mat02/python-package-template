@@ -130,7 +130,7 @@ def publish_docs():
     with lcd('public'), settings(warn_only=True):
         local('git add .')
         local('git commit -m "Publishing to gh-pages (Fabfile)"')
-        local('git gh-pages')
+        local('git push gh-pages')
 
 
 @task
