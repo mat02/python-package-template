@@ -6,7 +6,7 @@ Python 3 Package Cookiecutter
 
 An opinionated, dead-simple cookiecutter_ for modern Python 3 packages.
 
-*Adapted from Audrey's cookiecutter-pypackage_*
+*Adapted from Audrey's* cookiecutter-pypackage_
 
 
 Features
