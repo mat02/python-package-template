@@ -24,6 +24,7 @@
 
 {% if open_source %}
 * Documentation: https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }}
+* Source: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
 {% endif %}
 
 Installation
