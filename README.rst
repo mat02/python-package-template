@@ -53,13 +53,13 @@ Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
 
-    clean                 Remove all build, test, coverage and Python artifac...
+    clean                 Remove all build, test, coverage and Python artifacts.
     clean_build           Remove build artifacts.
     clean_pyc             Remove Python file artifacts.
     clean_test            Remove test and coverage artifacts.
-    coverage              Check code coverage quickly with the default Python...
+    coverage              Check code coverage quickly with the default Python.
     dist                  Build source and wheel package.
-    docs                  Generage Sphinx HTML documentation, including API d...
+    docs                  Generage Sphinx HTML documentation, including API docs.
     gen_requirements_txt  Generate a requirements.txt from Fabfile.
     publish_docs          Compile docs and publish to GitHub Pages.
     release               Package and upload a release to pypi.
