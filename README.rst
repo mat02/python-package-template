@@ -53,14 +53,23 @@ Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
 
-    clean                 Remove all build, test, coverage and Python artifacts.
-    coverage              Check code coverage quickly with the default Python.
-    docs                  Generage Sphinx HTML documentation, including API docs.
+Available commands:
+
+    clean                 Remove all build, test, coverage and Python artifac...
+    clean_build           Remove build artifacts.
+    clean_pyc             Remove Python file artifacts.
+    clean_test            Remove test and coverage artifacts.
+    coverage              Check code coverage quickly with the default Python...
+    dist                  Build source and wheel package.
+    docs                  Generage Sphinx HTML documentation, including API d...
     gen_requirements_txt  Generate a requirements.txt from Fabfile.
     publish_docs          Compile docs and publish to GitHub Pages.
     release               Package and upload a release to pypi.
     test                  Run tests quickly with default Python.
     test_all              Run on multiple Python versions with tox.
+    tox                   Run on multiple Python versions with tox.
+    verify_lockfile       Assert that all the packages in Pipfile are in Pipf...
+
 
 Upon pushing your project to github, I suggest immediately running
 
