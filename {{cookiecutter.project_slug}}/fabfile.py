@@ -159,24 +159,14 @@ def gen_requirements_txt(with_dev=True):
     This is more for the benefit of third-party packages
     like pyup.io that need requirements.txt
     """
-    from configparser import ConfigParser
     from pathlib import Path
+    from utils import get_packages_from_lockfile
 
-    pip_config = ConfigParser()
-    pip_config.read('Pipfile')
+    packages = get_packages_from_lockfile()
+
     requirements_file = Path('requirements.txt')
-    packages = []
-    items = pip_config.items('packages')
-    if true(with_dev) and pip_config.has_section('dev-packages'):
-        items.extend(pip_config.items('dev-packages'))
-    for item in items:
-        lib, version = item
-        lib, version = lib.strip('"'), version.strip('"')
-        # ungracefully handle wildcard requirements
-        if version == '*': version = ''
-        packages.append(lib + version)
 
-    requirements_file.write_text('\n'.join(packages))
+    requirements_file.write_text('\n'.join(packages.default + (packages.development if with_dev else [])))
     print('successfully generated requirements.txt')
 
 
