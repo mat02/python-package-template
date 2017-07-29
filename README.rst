@@ -53,8 +53,6 @@ Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
 
-Available commands:
-
     clean                 Remove all build, test, coverage and Python artifac...
     clean_build           Remove build artifacts.
     clean_pyc             Remove Python file artifacts.
