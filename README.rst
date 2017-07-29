@@ -66,7 +66,7 @@ Prepend ``fab`` to the following commands from project root:
     test                  Run tests quickly with default Python.
     test_all              Run on multiple Python versions with tox.
     tox                   Run on multiple Python versions with tox.
-    verify_lockfile       Assert that all the packages in Pipfile are in Pipf...
+    verify_lockfile       Assert that all the packages in Pipfile are in Pipfile.lock
 
 
 Upon pushing your project to github, I suggest immediately running
