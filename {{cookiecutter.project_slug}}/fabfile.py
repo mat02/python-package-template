@@ -169,7 +169,7 @@ def gen_requirements_txt(with_dev=True):
 
     requirements_file = Path('requirements.txt')
 
-    requirements_file.write_text('\n'.join(packages.default + (packages.development if with_dev else [])))
+    requirements_file.write_text('\n'.join(packages.default + (packages.development if true(with_dev) else [])))
     print('successfully generated requirements.txt')
 
 
