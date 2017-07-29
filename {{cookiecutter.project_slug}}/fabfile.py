@@ -187,6 +187,7 @@ class VerifyLockfile(Task):
 
 
 verify_lockfile = VerifyLockfile()
+verify_lockfile.__doc__ = utils.verify_lockfile.__doc__
 
 
 @singledispatch
