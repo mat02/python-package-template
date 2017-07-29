@@ -2,35 +2,55 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
+import json
 from configparser import ConfigParser
+from operator import attrgetter
+from pathlib import Path
+from types import SimpleNamespace
 
 from setuptools import setup
 
 
-def get_requirements(section: str) -> list:
-    """Read requirements from Pipfile."""
-    pip_config = ConfigParser()
-    pip_config.read('Pipfile')
+def verify_lockfile():
+    """Assert that all the packages in Pipfile are in Pipfile.lock ."""
+    config = ConfigParser()
+    config.read('Pipfile')
 
-    def gen():
-        for item in pip_config.items(section):
-            lib, version = item
-            lib, version = lib.strip('"'), version.strip('"')
-            # ungracefully handle wildcard requirements
-            if version == '*': version = ''
-            yield lib + version
+    pipfile_packages = set(p.lower().replace('_', '-') for p, _ in
+                           config.items('packages') + (
+                               config.items('dev-packages') if config.has_section('dev-packages') else []))
 
-    return list(gen())
+    lockfile_data = json.loads(Path('Pipfile.lock').read_text())
+    lockfile_packages = set(tuple(lockfile_data['default'].keys()) + tuple(lockfile_data['develop'].keys()))
+
+    assert pipfile_packages.issubset(
+        lockfile_packages), '{} packages in Pipfile not in Pipfile.lock - Please update Pipfile.lock'. \
+        format(pipfile_packages.difference(lockfile_packages))
 
 
-packages = get_requirements('packages')
-dev_packages = get_requirements('dev-packages')
+def get_packages_from_lockfile():
+    result = SimpleNamespace(default=list(), development=list())
+    lockfile = Path('Pipfile.lock')
+    lockfile_data = json.loads(lockfile.read_text())
+    for key in ('default', 'develop'):
+        for package, version_info in lockfile_data[key].items():
+            packages = attrgetter('development' if key == 'develop' else key)(result)
+            packages.append(package + version_info['version'])
+    return result
+
+
+verify_lockfile()
+
+packages = get_packages_from_lockfile()
 
 setup(
-    install_requires=packages,
-    tests_require=dev_packages,
+    install_requires=packages.default,
+    tests_require=packages.development,
     extras_require={
-        'dev': dev_packages,
+        'dev': packages.development,
+        'development': packages.development,
+        'test': packages.development,
+        'testing': packages.development,
     },
     {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
     entry_points={
