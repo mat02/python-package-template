@@ -1,5 +1,8 @@
 from functools import singledispatch
 
+import utils
+
+from fabric.tasks import Task
 from fabric.api import *
 
 
@@ -47,6 +50,7 @@ def test(capture=True):
         capture: capture stdout [default: True]
     """
     disable_capturing = ' -s' if not true(capture) else ''
+    verify_lockfile.run()
     local('py.test' + disable_capturing)
 
 
@@ -160,14 +164,29 @@ def gen_requirements_txt(with_dev=True):
     like pyup.io that need requirements.txt
     """
     from pathlib import Path
-    from utils import get_packages_from_lockfile
 
-    packages = get_packages_from_lockfile()
+    packages = utils.get_packages_from_lockfile()
 
     requirements_file = Path('requirements.txt')
 
     requirements_file.write_text('\n'.join(packages.default + (packages.development if with_dev else [])))
     print('successfully generated requirements.txt')
+
+
+class VerifyLockfile(Task):
+    name = 'verify_lockfile'
+
+    def set_docstring(func):
+        func.__doc__ = utils.verify_lockfile.__doc__
+        return func
+
+    @set_docstring
+    def run(self):
+        utils.verify_lockfile()
+        print('lockfile verified')
+
+
+verify_lockfile = VerifyLockfile()
 
 
 @singledispatch
