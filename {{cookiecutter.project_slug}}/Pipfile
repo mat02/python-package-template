@@ -7,6 +7,7 @@ verify_ssl = true
 
 [dev-packages]
 bumpversion = "==0.5.3"
+colorama = "0.3.9"
 coverage = "==4.4.1"
 cryptography = "==1.9"
 flake8 = "==3.3.0"

@@ -1,6 +1,7 @@
 from functools import singledispatch
 
-import utils
+from utils import _verify_lockfile
+from utils import *
 
 from fabric.tasks import Task
 from fabric.api import *
@@ -119,7 +120,7 @@ def publish_docs():
                 git push gh-pages
                 git checkout master
                 """).strip())
-            print('created github pages branch')
+            print_green('created github pages branch')
 
     # deleting old publication
     local('rm -rf public')
@@ -158,36 +159,38 @@ def release():
 @task
 def gen_requirements_txt(with_dev=True):
     """
-    Generate a requirements.txt from Fabfile.
+    Generate a requirements.txt from Pipfile.lock
 
     This is more for the benefit of third-party packages
     like pyup.io that need requirements.txt
     """
     from pathlib import Path
 
-    packages = utils.get_packages_from_lockfile()
+    verify_lockfile.run()
+
+    packages = get_packages_from_lockfile()
 
     requirements_file = Path('requirements.txt')
 
     requirements_file.write_text('\n'.join(packages.default + (packages.development if true(with_dev) else [])))
-    print('successfully generated requirements.txt')
+    print_green('successfully generated requirements.txt')
 
 
 class VerifyLockfile(Task):
     name = 'verify_lockfile'
 
     def set_docstring(func):
-        func.__doc__ = utils.verify_lockfile.__doc__
+        func.__doc__ = _verify_lockfile.__doc__
         return func
 
     @set_docstring
     def run(self):
-        utils.verify_lockfile()
-        print('lockfile verified')
+        _verify_lockfile()
+        print_green('lockfile verified')
 
 
 verify_lockfile = VerifyLockfile()
-verify_lockfile.__doc__ = utils.verify_lockfile.__doc__
+verify_lockfile.__doc__ = _verify_lockfile.__doc__
 
 
 @singledispatch
