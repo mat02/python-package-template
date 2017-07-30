@@ -29,19 +29,24 @@ Quickstart
 Install the latest Cookiecutter if you haven't installed it yet (this requires
 Cookiecutter 1.4.0 or higher)::
 
+    brew install cookiecutter
+    # or
     pip install -U cookiecutter
+    # or
+    pipenv install -d cookiecutter
 
 Generate a Python package project::
 
     cookiecutter https://github.com/knowsuchagency/cookiecutter-pypackage.git
 
-Install the necessary tools to work on your project
+    # answer questions to generate project template
 
-.. code-block:: bash
-
-    cd your_project
-    pipenv install -d # if using pipenv
+    cd your_new_project
     pip install .[dev] # if using legacy Python tooling
+    pipenv install -d # if using pipenv
+
+    # to see what options are automated for you via fabric
+    fab -l
 
 Development
 -----------
