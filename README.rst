@@ -27,7 +27,9 @@ Quickstart
 ----------
 
 Install the latest Cookiecutter if you haven't installed it yet (this requires
-Cookiecutter 1.4.0 or higher)::
+Cookiecutter 1.4.0 or higher)
+
+.. code-block:: bash
 
     brew install cookiecutter
     # or
@@ -35,7 +37,9 @@ Cookiecutter 1.4.0 or higher)::
     # or
     pipenv install -d cookiecutter
 
-Generate a Python package project::
+Generate a Python package project
+
+.. code-block:: bash
 
     cookiecutter https://github.com/knowsuchagency/cookiecutter-pypackage.git
 
