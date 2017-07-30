@@ -12,7 +12,7 @@ init(autoreset=True)
 
 
 def print_in_color(color, *args, **kwargs):
-    """Print text in a given color"""
+    """Print text in a given color."""
     file = kwargs.pop('file', None)
     with StringIO('w+') as fp:
         fp.write(color)
@@ -78,7 +78,10 @@ def test(capture=True):
 def test_all(absolute_path=None):
     """Run on multiple Python versions with tox."""
     from pathlib import Path
+
+    # This happens to be where I have Python 3.5 installed; may well be different for others. Edit as necessary.
     py35_path = Path(Path.home(), '.pyenv/versions/3.5.2/bin') if absolute_path is None else Path(absolute_path)
+
     with path(str(py35_path.absolute())):
         local('tox')
 
