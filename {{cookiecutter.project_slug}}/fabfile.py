@@ -1,10 +1,29 @@
+from functools import partial
 from functools import singledispatch
+from io import StringIO
 
-from utils import _verify_lockfile
-from utils import *
+from utils import _verify_lockfile, get_packages_from_lockfile
 
 from fabric.tasks import Task
 from fabric.api import *
+
+from colorama import init, Back
+init(autoreset=True)
+
+
+def print_in_color(color, *args, **kwargs):
+    """Print text in a given color"""
+    file = kwargs.pop('file', None)
+    with StringIO('w+') as fp:
+        fp.write(color)
+        print(*args, file=fp, **kwargs)
+        fp.seek(0)
+        print(fp.read().strip(), file=file)
+
+
+print_red = partial(print_in_color, Back.RED)
+print_green = partial(print_in_color, Back.GREEN)
+print_yellow = partial(print_in_color, Back.YELLOW)
 
 
 @task

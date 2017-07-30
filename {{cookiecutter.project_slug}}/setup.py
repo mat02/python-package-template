@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-from utils import verify_lockfile, get_packages_from_lockfile
+from utils import _verify_lockfile as verify_lockfile
+from utils import get_packages_from_lockfile
 
 from setuptools import setup
 
