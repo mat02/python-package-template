@@ -2,7 +2,12 @@ import json
 from configparser import ConfigParser
 from operator import attrgetter
 from pathlib import Path
-from types import SimpleNamespace
+from typing import NamedTuple, List
+
+
+class Packages(NamedTuple):
+    default: List[str]
+    development: List[str]
 
 
 def _verify_lockfile():
@@ -31,7 +36,7 @@ def get_packages_from_lockfile():
 
     """
 
-    result = SimpleNamespace(default=list(), development=list())
+    result = Packages(default=list(), development=list())
     lockfile = Path('Pipfile.lock')
     lockfile_data = json.loads(lockfile.read_text())
     for key in ('default', 'develop'):

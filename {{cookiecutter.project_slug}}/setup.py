@@ -7,18 +7,20 @@ from utils import get_packages_from_lockfile
 
 from setuptools import setup
 
+# ensure all the packages listed in Pipfile are in Pipfile.lock
 verify_lockfile()
 
-packages = get_packages_from_lockfile()
+# read the lockfile to get default and development packages
+default, development = get_packages_from_lockfile()
 
 setup(
-    install_requires=packages.default,
-    tests_require=packages.development,
+    install_requires=default,
+    tests_require=development,
     extras_require={
-        'dev': packages.development,
-        'development': packages.development,
-        'test': packages.development,
-        'testing': packages.development,
+        'dev': development,
+        'development': development,
+        'test': development,
+        'testing': development,
     },
     {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
     entry_points={

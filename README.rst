@@ -15,7 +15,7 @@ Features
 * Testing setup with ``py.test``
 * Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
 * Travis-CI_: Ready for Travis Continuous Integration testing
-* Tox_ testing: Setup to easily test for Python 3.5, 3.6
+* Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
 * Fabric_ for task automation
