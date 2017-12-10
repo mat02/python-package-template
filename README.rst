@@ -46,8 +46,7 @@ Generate a Python package project
     # answer questions to generate project template
 
     cd your_new_project
-    pip install .[dev] # if using legacy Python tooling
-    pipenv install -d # if using pipenv
+    pipenv install -d
 
     # to see what options are automated for you via fabric
     fab -l

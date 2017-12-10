@@ -1,29 +1,6 @@
-from functools import partial
 from functools import singledispatch
-from io import StringIO
 
-from utils import _verify_lockfile, get_packages_from_lockfile
-
-from fabric.tasks import Task
 from fabric.api import *
-
-from colorama import init, Back
-init(autoreset=True)
-
-
-def print_in_color(color, *args, **kwargs):
-    """Print text in a given color."""
-    file = kwargs.pop('file', None)
-    with StringIO('w+') as fp:
-        fp.write(color)
-        print(*args, file=fp, **kwargs)
-        fp.seek(0)
-        print(fp.read().strip(), file=file)
-
-
-print_red = partial(print_in_color, Back.RED)
-print_green = partial(print_in_color, Back.GREEN)
-print_yellow = partial(print_in_color, Back.YELLOW)
 
 
 @task
@@ -70,7 +47,6 @@ def test(capture=True):
         capture: capture stdout [default: True]
     """
     disable_capturing = ' -s' if not true(capture) else ''
-    verify_lockfile.run()
     local('py.test' + disable_capturing)
 
 
@@ -136,7 +112,7 @@ def publish_docs():
                 git push gh-pages
                 git checkout master
                 """).strip())
-            print_green('created github pages branch')
+            print('created github pages branch')
 
     # deleting old publication
     local('rm -rf public')
@@ -170,43 +146,6 @@ def release():
     publish_docs()
     local('python setup.py sdist upload')
     local('python setup.py bdist_wheel upload')
-
-
-@task
-def gen_requirements_txt(with_dev=True):
-    """
-    Generate a requirements.txt from Pipfile.lock
-
-    This is more for the benefit of third-party packages
-    like pyup.io that need requirements.txt
-    """
-    from pathlib import Path
-
-    verify_lockfile.run()
-
-    packages = get_packages_from_lockfile()
-
-    requirements_file = Path('requirements.txt')
-
-    requirements_file.write_text('\n'.join(packages.default + (packages.development if true(with_dev) else [])))
-    print_green('successfully generated requirements.txt')
-
-
-class VerifyLockfile(Task):
-    name = 'verify_lockfile'
-
-    def set_docstring(func):
-        func.__doc__ = _verify_lockfile.__doc__
-        return func
-
-    @set_docstring
-    def run(self):
-        _verify_lockfile()
-        print_green('lockfile verified')
-
-
-verify_lockfile = VerifyLockfile()
-verify_lockfile.__doc__ = _verify_lockfile.__doc__
 
 
 @singledispatch
