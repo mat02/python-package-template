@@ -5,22 +5,14 @@
 from setuptools import setup
 
 try:
+    import pipenv
+except ImportError:
+    print('pipenv not installed for current python')
+    print('using vendored version in ./vendor/')
+    import sys; sys.path.append('vendor')
+finally:
     from pipenv.project import Project
     from pipenv.utils import convert_deps_to_pip
-except (ImportError, ModuleNotFoundError):
-    # we need pipenv in order to parse our pipfile
-    # since setuptools' setup_requires is broken, we use
-    # this vendor hack
-    import sys
-    import shlex
-    import subprocess
-    import tempfile
-
-    with tempfile.TemporaryDirectory() as tempdir:
-        subprocess.check_output(shlex.split('pip install pipenv -t {}'.format(tempdir)))
-        sys.path.append(tempdir)
-        from pipenv.project import Project
-        from pipenv.utils import convert_deps_to_pip
 
 # get requirements from Pipfile
 pfile = Project(chdir=False).parsed_pipfile
@@ -36,11 +28,11 @@ setup(
         'test': development,
         'testing': development,
     },
-    { % if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
-entry_points = {
-                   'console_scripts': [
-                       '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
-                   ]
-               },
-               { % endif %}
+    {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
+    entry_points={
+        'console_scripts': [
+            '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
+        ]
+    },
+    {% endif %}
 )

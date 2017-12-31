@@ -8,5 +8,7 @@
   "pypi_username": "{{ cookiecutter.github_username }}",
   "version": "0.1.0",
   "open_source": "y",
-  "cli": "y"
+  "cli": "y",
+
+  "_copy_without_render": ["*vendor"]
 }
