@@ -41,10 +41,14 @@ Generate a Python package project
 
     cd your_new_project
 
-    pipenv install -d # recommended
-    pip install -e . # (pipenv install -d -e .) is still buggy, so best to do these commands separately
+    # To install dependencies...
 
-    # or if not using pipenv
+    # if using pipenv (recommended)
+    pipenv install -d
+    pip install -e .
+
+    # otherwise, if using pip with virtualenv, pyenv, or another toolchain
+    # take what steps you need to create your virtual environment and...
     pip install -e .[dev]
 
     # to see what options are automated for you via fabric
