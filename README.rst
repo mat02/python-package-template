@@ -24,28 +24,24 @@ Features
 Quickstart
 ----------
 
-Install the latest Cookiecutter if you haven't installed it yet (this requires
-Cookiecutter 1.4.0 or higher)
+Install the latest `Cookiecutter`_ if you haven't installed it yet.
 
 .. code-block:: bash
 
     brew install cookiecutter
-    # or
-    pip install -U cookiecutter
-    # or
-    pipenv install -d cookiecutter
+
 
 Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/cookiecutter-pypackage.git
+    cookiecutter https://github.com/knowsuchagency/launchpad.git
 
     # answer questions to generate project template
 
     cd your_new_project
 
-    pipenv install -d # recommended (brew install pipenv)
+    pipenv install -d # recommended
     pip install -e . # (pipenv install -d -e .) is still buggy, so best to do these commands separately
 
     # or if not using pipenv
@@ -92,7 +88,7 @@ Additional Options
 
 * Create a GitHub repo for your generated project.
 * Add the repo to your Travis-CI_ account.
-* Activate your project on `pyup.io`_.
+* Activate your project on `pyup.io`_. (if using pipenv, you can generate requirements.txt with ``pipenv lock -r``)
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
 
