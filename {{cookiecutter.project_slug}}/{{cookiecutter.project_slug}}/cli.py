@@ -1,7 +1,7 @@
 """
 Usage:  [OPTIONS] COMMAND [ARGS]...
 
-  A cli for {{ cookiecutter.project_slug }}.
+  A cli for {{ cookiecutter.package_name }}.
 
 Options:
   --help  Show this message and exit.
@@ -15,7 +15,7 @@ import click
 
 @click.group()
 def main():
-    """A cli for django-mako-plus."""
+    """A cli for {{ cookiecutter.package_name }}."""
     pass
 
 
