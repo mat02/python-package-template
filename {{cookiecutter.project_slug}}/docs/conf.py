@@ -58,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'{{ cookiecutter.project_name }}'
+project = u'{{ cookiecutter.package_name }}'
 copyright = u"{% now 'local', '%Y' %}, {{ cookiecutter.full_name }}"
 
 # The version info for the project you're documenting, acts as replacement
@@ -212,7 +212,7 @@ latex_elements = {
 # [howto/manual]).
 latex_documents = [
     ('index', '{{ cookiecutter.project_slug }}.tex',
-     u'{{ cookiecutter.project_name }} Documentation',
+     u'{{ cookiecutter.package_name }} Documentation',
      u'{{ cookiecutter.full_name }}', 'manual'),
 ]
 
@@ -243,7 +243,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', '{{ cookiecutter.project_slug }}',
-     u'{{ cookiecutter.project_name }} Documentation',
+     u'{{ cookiecutter.package_name }} Documentation',
      [u'{{ cookiecutter.full_name }}'], 1)
 ]
 
@@ -258,7 +258,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', '{{ cookiecutter.project_slug }}',
-     u'{{ cookiecutter.project_name }} Documentation',
+     u'{{ cookiecutter.package_name }} Documentation',
      u'{{ cookiecutter.full_name }}',
      '{{ cookiecutter.project_slug }}',
      'One line description of project.',
