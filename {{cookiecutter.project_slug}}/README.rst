@@ -28,7 +28,7 @@
 {% endif %}
 
 Installation
---------
+------------
 
 * TODO
 
