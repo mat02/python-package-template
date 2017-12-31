@@ -2,16 +2,29 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-from utils import _verify_lockfile as verify_lockfile
-from utils import get_packages_from_lockfile
-
 from setuptools import setup
 
-# ensure all the packages listed in Pipfile are in Pipfile.lock
-verify_lockfile()
+try:
+    import pipenv
+except (ImportError, ModuleNotFoundError):
+    # we need pipenv in order to parse our pipfile
+    # since setuptools' setup_requires is broken, we use
+    # this vendor hack
+    import sys
+    import shlex
+    import subprocess
+    subprocess.check_output(shlex.split('pip install pipenv -t vendor'))
+    sys.path.append('vendor')
+finally:
+    from pipenv.project import Project
+    from pipenv.utils import convert_deps_to_pip
 
-# read the lockfile to get default and development packages
-default, development = get_packages_from_lockfile()
+
+# get requirements from Pipfile
+pfile = Project(chdir=False).parsed_pipfile
+default = convert_deps_to_pip(pfile['packages'], r=False)
+development = convert_deps_to_pip(pfile['dev-packages'], r=False)
+
 
 setup(
     install_requires=default,

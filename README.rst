@@ -46,7 +46,12 @@ Generate a Python package project
     # answer questions to generate project template
 
     cd your_new_project
-    pipenv install -d
+
+    pipenv install -d # recommended (brew install pipenv)
+    pip install -e . # (pipenv install -d -e .) is still buggy, so best to do these commands separately
+
+    # or
+    pip install -e .[dev]
 
     # to see what options are automated for you via fabric
     fab -l
@@ -68,13 +73,11 @@ Prepend ``fab`` to the following commands from project root:
     coverage              Check code coverage quickly with the default Python.
     dist                  Build source and wheel package.
     docs                  Generage Sphinx HTML documentation, including API docs.
-    gen_requirements_txt  Generate a requirements.txt from Fabfile.
     publish_docs          Compile docs and publish to GitHub Pages.
     release               Package and upload a release to pypi.
     test                  Run tests quickly with default Python.
     test_all              Run on multiple Python versions with tox.
     tox                   Run on multiple Python versions with tox.
-    verify_lockfile       Assert that all the packages in Pipfile are in Pipfile.lock
 
 
 Upon pushing your project to github, I suggest immediately running
