@@ -50,7 +50,7 @@ Generate a Python package project
     pipenv install -d # recommended (brew install pipenv)
     pip install -e . # (pipenv install -d -e .) is still buggy, so best to do these commands separately
 
-    # or
+    # or if not using pipenv
     pip install -e .[dev]
 
     # to see what options are automated for you via fabric
