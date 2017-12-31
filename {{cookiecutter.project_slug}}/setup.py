@@ -5,7 +5,8 @@
 from setuptools import setup
 
 try:
-    import pipenv
+    from pipenv.project import Project
+    from pipenv.utils import convert_deps_to_pip
 except (ImportError, ModuleNotFoundError):
     # we need pipenv in order to parse our pipfile
     # since setuptools' setup_requires is broken, we use
@@ -13,18 +14,18 @@ except (ImportError, ModuleNotFoundError):
     import sys
     import shlex
     import subprocess
-    subprocess.check_output(shlex.split('pip install pipenv -t vendor'))
-    sys.path.append('vendor')
-finally:
-    from pipenv.project import Project
-    from pipenv.utils import convert_deps_to_pip
+    import tempfile
 
+    with tempfile.TemporaryDirectory() as tempdir:
+        subprocess.check_output(shlex.split('pip install pipenv -t {}'.format(tempdir)))
+        sys.path.append(tempdir)
+        from pipenv.project import Project
+        from pipenv.utils import convert_deps_to_pip
 
 # get requirements from Pipfile
 pfile = Project(chdir=False).parsed_pipfile
 default = convert_deps_to_pip(pfile['packages'], r=False)
 development = convert_deps_to_pip(pfile['dev-packages'], r=False)
-
 
 setup(
     install_requires=default,
@@ -35,11 +36,11 @@ setup(
         'test': development,
         'testing': development,
     },
-    {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
-    entry_points={
-        'console_scripts': [
-            '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
-        ]
-    },
-    {% endif %}
+    { % if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
+entry_points = {
+                   'console_scripts': [
+                       '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
+                   ]
+               },
+               { % endif %}
 )
