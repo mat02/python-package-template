@@ -4,7 +4,7 @@ verify_ssl = true
 
 [packages]
 attrs = "*"
-{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}docopt = "*"{% endif %}
+{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}click = "*"{% endif %}
 
 [dev-packages]
 bumpversion = "*"
