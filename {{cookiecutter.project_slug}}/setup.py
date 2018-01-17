@@ -9,7 +9,8 @@ try:
 except ImportError:
     print('pipenv not installed for current python')
     print('using vendored version in ./vendor/')
-    import sys; sys.path.append('vendor')
+    import sys
+    sys.path.append('vendor')
 finally:
     from pipenv.project import Project
     from pipenv.utils import convert_deps_to_pip
