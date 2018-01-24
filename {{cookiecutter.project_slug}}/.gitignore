@@ -63,3 +63,6 @@ target/
 
 # ignore public folder used to host documentation on github pages
 public/
+
+# jetbrains
+.idea/
