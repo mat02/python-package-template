@@ -45,15 +45,19 @@ def clean():
 
 
 @task
-def test(capture=True):
+def test(capture=True, pdb=False):
     """
     Run tests quickly with default Python.
 
     Args:
         capture: capture stdout [default: True]
+        pdb: run debugger upon encountering exception
     """
-    disable_capturing = ' -s' if not true(capture) else ''
-    local('py.test' + disable_capturing)
+    flags = ' '.join([
+        '-s' if not true(capture) else '',
+        '--pdb' if true(pdb) else ''
+        ])
+    local('py.test tests/' + ' ' + flags)
 
 
 @task(alias='tox')
