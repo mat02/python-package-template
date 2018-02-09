@@ -43,7 +43,8 @@ import {{ cookiecutter.project_slug }}
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.napoleon',
-              'sphinx.ext.githubpages']
+              'sphinx.ext.githubpages',
+              'sphinxcontrib.asyncio']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
