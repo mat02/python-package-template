@@ -45,7 +45,8 @@ Generate a Python package project
 
     # if using pipenv (recommended)
     pipenv install -d
-    pip install -e .
+    pipenv shell
+    python setup.py develop
 
     # otherwise, if using pip with virtualenv, pyenv, or another toolchain
     # take what steps you need to create your virtual environment and...
