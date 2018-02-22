@@ -16,7 +16,7 @@
      :target: https://pyup.io/repos/github/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}/
      :alt: Updates
 
-.. image:: https://img.shields.io/github/license/mashape/apistatus.svg
+.. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
 
 {% endif %}
 
