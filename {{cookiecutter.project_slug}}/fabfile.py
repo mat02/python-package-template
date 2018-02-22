@@ -24,6 +24,7 @@ def install(development=True, idempotent=True):
     development_flag = '-d' if true(development) else ''
 
     local(f'pipenv install {development_flag}')
+    local('python setup.py develop')
 
 
 @task
