@@ -23,7 +23,7 @@ Features
 Quickstart
 ----------
 
-Install `Cookiecutter`_ and `pipenv`_ and `fabric`_ if you haven't installed them yet.
+Install the latest `Cookiecutter`_, `pipenv`_, and `fabric`_ if you haven't installed it yet.
 
 .. code-block:: bash
 
@@ -35,7 +35,7 @@ Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/launchpad.git --checkout cloudfoundry
+    cookiecutter https://github.com/knowsuchagency/python-package-template.git --checkout cloudfoundry
 
     # answer questions to generate project template
 
