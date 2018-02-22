@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 import os
 
-from {{ cookiecutter.package_name }}.{{ cookiecutter.project_slug }} import app
+from {{ cookiecutter.project_slug }}.{{ cookiecutter.project_slug }} import app
 
 import click
 
