@@ -10,7 +10,7 @@ from fabric.api import *
 
 
 @task
-def uninstall_all():
+def uninstall():
     """Uninstalls all Python dependencies."""
     from tempfile import NamedTemporaryFile
     import subprocess as sp
