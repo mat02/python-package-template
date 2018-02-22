@@ -24,18 +24,19 @@ Features
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_ if you haven't installed it yet.
+Install the latest `Cookiecutter`_, `pipenv`_, and `fabric`_ if you haven't installed it yet.
 
 .. code-block:: bash
 
-    brew install cookiecutter
+    brew install cookiecutter pipenv
+    pip3 install fabric3
 
 
 Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/launchpad.git
+    cookiecutter https://github.com/knowsuchagency/python-package-template.git
 
     # answer questions to generate project template
 
