@@ -2,7 +2,7 @@
 Python 3 Package Cookiecutter
 =============================
 
-.. image:: https://img.shields.io/github/license/mashape/apistatus.svg
+.. image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
 
 An opinionated, dead-simple cookiecutter_ for modern Python 3 packages.
 
