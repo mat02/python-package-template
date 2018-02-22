@@ -41,11 +41,11 @@ Generate a Python package project
 
     cd your_new_project
 
-    # to generate the virtual environment
+    # generate the virtual environment and activate it
 
     pipenv shell
 
-    # To install dependencies...
+    # install dependencies
 
     fab install
 
@@ -53,7 +53,7 @@ Generate a Python package project
 
     fab runserver
 
-    # to deploy
+    # deploy
 
     fab deploy
 
