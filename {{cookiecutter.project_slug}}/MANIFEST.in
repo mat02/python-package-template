@@ -3,7 +3,7 @@ include README.rst
 include Pipfile
 
 graft {{ cookiecutter.project_slug }}
-graft vendor
+graft .vendor
 graft tests
 graft docs
 
