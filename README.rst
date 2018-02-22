@@ -14,21 +14,20 @@ Features
 
 * Testing setup with ``py.test``
 * Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
-* Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
 * Fabric_ for task automation
-* Optional command line interface with Click_
+* Command line interface with Click_
 
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_ if you haven't installed it yet.
+Install the latest `Cookiecutter`_ and `pipenv`_ if you haven't installed them yet.
 
 .. code-block:: bash
 
-    brew install cookiecutter
+    brew install cookiecutter pipenv
 
 
 Generate a Python package project
@@ -43,14 +42,9 @@ Generate a Python package project
 
     # To install dependencies...
 
-    # if using pipenv (recommended)
-    pipenv install -d
     pipenv shell
+    pipenv install -d
     python setup.py develop
-
-    # otherwise, if using pip with virtualenv, pyenv, or another toolchain
-    # take what steps you need to create your virtual environment and...
-    pip install -e .[dev]
 
     # to see what options are automated for you via fabric
     fab -l
@@ -65,6 +59,7 @@ Prepend ``fab`` to the following commands from project root:
 
 .. code-block:: bash
 
+    deploy                Deploy to cloudfoundry.
     clean                 Remove all build, test, coverage and Python artifacts.
     clean_build           Remove build artifacts.
     clean_pyc             Remove Python file artifacts.
@@ -72,28 +67,9 @@ Prepend ``fab`` to the following commands from project root:
     coverage              Check code coverage quickly with the default Python.
     dist                  Build source and wheel package.
     docs                  Generage Sphinx HTML documentation, including API docs.
-    publish_docs          Compile docs and publish to GitHub Pages.
-    release               Package and upload a release to pypi.
     test                  Run tests quickly with default Python.
-    test_all              Run on multiple Python versions with tox.
     tox                   Run on multiple Python versions with tox.
 
-
-Upon pushing your project to github, I suggest immediately running
-
-.. code-block:: bash
-
-    fab publish_docs
-
-and navigating to ``http://{your_github_username}.github.io/{repo_name}`` to witness your documentation
-immediately rendered and available in all its glory. Cool stuff.
-
-Additional Options
-------------------
-
-* Create a GitHub repo for your generated project.
-* Add the repo to your Travis-CI_ account.
-* Activate your project on `pyup.io`_. (if using pipenv, you can generate requirements.txt with ``pipenv lock -r``)
 
 For more details, see the `cookiecutter-pypackage tutorial`_.
 

@@ -173,7 +173,7 @@ def docs(open_browser=True):
     if true(open_browser):
         local('open public/index.html')
 
-
+{% if cookiecutter.open_source == 'y' %}
 @task
 def publish_docs():
     """
@@ -213,7 +213,7 @@ def publish_docs():
         local('git add .')
         local('git commit -m "Publishing to gh-pages (Fabfile)"')
         local('git push origin gh-pages')
-
+{% endif %}
 
 @task
 def dist():
