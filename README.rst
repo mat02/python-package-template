@@ -42,19 +42,13 @@ Generate a Python package project
 
     cd your_new_project
 
-    # To install dependencies...
+    # create and activate virtualenv environment
 
-    # if using pipenv (recommended)
-    pipenv install -d
     pipenv shell
-    python setup.py develop
 
-    # otherwise, if using pip with virtualenv, pyenv, or another toolchain
-    # take what steps you need to create your virtual environment and...
-    pip install -e .[dev]
+    # install requirements
 
-    # to see what options are automated for you via fabric
-    fab -l
+    fab install
 
 Development
 -----------
