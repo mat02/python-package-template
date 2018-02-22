@@ -10,6 +10,39 @@ from fabric.api import *
 
 
 @task
+def uninstall_all():
+    """Uninstalls all Python dependencies."""
+    from tempfile import NamedTemporaryFile
+    import subprocess as sp
+    import os
+
+    packages = []
+
+    for line in sp.run(('pip', 'freeze'), stdout=sp.PIPE).stdout.decode().splitlines():
+        if '==' in line:
+            package, *_ = line.split('==')
+        elif '#egg=' in line:
+            *_, package = line.split('egg=')
+        packages.append(package)
+
+    stdin = os.linesep.join(packages).encode()
+
+    with NamedTemporaryFile() as fn:
+        fn.write(stdin)
+        fn.seek(0)
+        sp.run(f'cat {fn.name} | xargs pip uninstall -y', shell=True)
+
+
+@task
+def autopep8(only_modified=True):
+    """Autopep8 modules."""
+    if only_modified:
+        local("git ls-files -m | grep '.py$' | xargs autopep8 -i")
+    else:
+        local('autopep8 -i -r fabfile.py charon/ tests/')
+
+
+@task
 def test_readme_rst():
     """Test README.rst to ensure it will render correctly in warehouse."""
     local('python setup.py check -r -s')
