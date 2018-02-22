@@ -48,7 +48,7 @@ def deploy():
     try:
         print('freezing only required deps')
 
-        uninstall_all()
+        uninstall()
 
         local('pipenv install')
 
