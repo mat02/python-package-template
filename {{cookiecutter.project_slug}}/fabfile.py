@@ -64,7 +64,7 @@ def autopep8(only_modified=True):
 def runserver(host='127.0.0.1', port=8000):
     """Runs local development server using {{ cookiecutter.package_name }}
 's own cli."""
-    local(f'{{cookiecutter.project_slug}} runserver --host {host} --port {port}')
+    local(f'python -m {{cookiecutter.project_slug}}.cli runserver --host {host} --port {port}')
 
 
 @task
