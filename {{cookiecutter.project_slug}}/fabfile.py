@@ -61,6 +61,13 @@ def autopep8(only_modified=True):
 
 
 @task
+def runserver(host='127.0.0.1', port=8000):
+    """Runs local development server using {{ cookiecutter.package_name }}
+'s own cli."""
+    local(f'{{cookiecutter.project_slug}} runserver --host {host} --port {port}')
+
+
+@task
 def deploy():
     """Deploy to cloudfoundry."""
     try:
@@ -191,7 +198,9 @@ def docs(open_browser=True):
     if true(open_browser):
         local('open public/index.html')
 
+
 {% if cookiecutter.open_source == 'y' %}
+
 @task
 def publish_docs():
     """
@@ -231,6 +240,8 @@ def publish_docs():
         local('git add .')
         local('git commit -m "Publishing to gh-pages (Fabfile)"')
         local('git push origin gh-pages')
+
+
 {% endif %}
 
 @task
