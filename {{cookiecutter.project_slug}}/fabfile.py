@@ -39,7 +39,43 @@ def autopep8(only_modified=True):
     if only_modified:
         local("git ls-files -m | grep '.py$' | xargs autopep8 -i")
     else:
-        local('autopep8 -i -r fabfile.py charon/ tests/')
+        local('autopep8 -i -r fabfile.py {{ cookiecutter.project_slug }}/ tests/')
+
+
+@task
+def deploy():
+    """Deploy to cloudfoundry."""
+    try:
+        print('freezing only required deps')
+
+        uninstall_all()
+
+        local('pipenv install')
+
+        print('dependencies frozen')
+
+        print('vendoring dependencies')
+
+        local('rm -rf vendor')
+        local('mkdir -p vendor')
+
+        local('pip freeze > requirements.txt')
+        local('pip download -r requirements.txt -d vendor --no-binary :all:')
+
+        print('deps vendored')
+
+        print('deploying to cloudfront')
+
+        local('cf push')
+
+        print('deployed')
+
+    finally:
+
+        print('reinstalling uninstalled packages')
+
+        local('pipenv install -d')
+        local('python setup.py install')
 
 
 @task

@@ -1,13 +1,13 @@
 {
   "full_name": "Stephan Fitzpatrick",
-  "email": "knowsuchagency@gmail.com",
+  "email": "stephan.fitzpatrick@kalohq.com",
   "github_username": "knowsuchagency",
-  "package_name": "python-boilerplate",
+  "package_name": "cf-boilerplate",
   "project_slug": "{{ cookiecutter.package_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
+  "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Cloud Foundry app.",
   "pypi_username": "{{ cookiecutter.github_username }}",
   "version": "0.1.0",
-  "open_source": "y",
+  "open_source": "n",
   "cli": "y",
 
   "_copy_without_render": ["*vendor"]

@@ -10,6 +10,8 @@ from pathlib import Path
 import re
 import os
 
+from {{ cookiecutter.package_name }}.{{ cookiecutter.project_slug }} import app
+
 import click
 
 
@@ -17,6 +19,13 @@ import click
 def main():
     """A cli for {{ cookiecutter.package_name }}."""
     pass
+
+
+@main.command()
+@click.option('--host', default='127.0.0.1')
+@click.option('--port', default=8000)
+def runserver(host, port):
+    app.run(host=host, port=port)
 
 
 def transform_module_text(matchobj):

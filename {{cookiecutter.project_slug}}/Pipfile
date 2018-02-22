@@ -4,6 +4,7 @@ verify_ssl = true
 
 [packages]
 attrs = "*"
+sanic = "*"
 {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}click = "*"{% endif %}
 
 [dev-packages]

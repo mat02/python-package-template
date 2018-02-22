@@ -1,0 +1,6 @@
+---
+applications:
+- name: {{ cookiecutter.package_name }}
+  memory: 512M
+  buildpack: https://github.com/cloudfoundry/python-buildpack
+  command: python -m {{ cookiecutter.package_name }}.cli runserver --host 0.0.0.0 --port $PORT

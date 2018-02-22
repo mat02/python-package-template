@@ -30,9 +30,16 @@
 Installation
 ------------
 
-* TODO
+::
+
+    git clone {this repo}
+    pipenv install -d
+    python setup.py develop
 
 Usage
 ---------
 
-* TODO
+::
+
+    pipenv shell
+    {{ cookiecutter.project_slug }} runserver
