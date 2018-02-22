@@ -10,6 +10,23 @@ from fabric.api import *
 
 
 @task
+def install(development=True, idempotent=True):
+    """
+    Install Python dependencies.
+
+    Args:
+        development: install self in development mode
+        idempotent: run uninstall first
+    """
+    if true(idempotent):
+        uninstall()
+
+    development_flag = '-d' if true(development) else ''
+
+    local(f'pipenv install {development_flag}')
+
+
+@task
 def uninstall():
     """Uninstalls all Python dependencies."""
     from tempfile import NamedTemporaryFile
