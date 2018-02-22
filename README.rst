@@ -23,31 +23,39 @@ Features
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_ and `pipenv`_ if you haven't installed them yet.
+Install `Cookiecutter`_ and `pipenv`_ and `fabric`_ if you haven't installed them yet.
 
 .. code-block:: bash
 
     brew install cookiecutter pipenv
+    pip3 install fabric3
 
 
 Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/launchpad.git
+    cookiecutter https://github.com/knowsuchagency/launchpad.git --checkout cloudfoundry
 
     # answer questions to generate project template
 
     cd your_new_project
 
-    # To install dependencies...
+    # to generate the virtual environment
 
     pipenv shell
-    pipenv install -d
-    python setup.py develop
 
-    # to see what options are automated for you via fabric
-    fab -l
+    # To install dependencies...
+
+    fab install
+
+    # to run the development server
+
+    fab runserver
+
+    # to deploy
+
+    fab deploy
 
 Development
 -----------
