@@ -62,10 +62,10 @@ def path(*paths: os.PathLike, prepend=False) -> T.List[str]:
 
 
 @contextmanager
-def cd(path: os.PathLike) -> os.PathLike:
+def cd(path_: os.PathLike) -> os.PathLike:
     """Change the current working directory and yield the last cwd."""
     cwd = os.getcwd()
-    os.chdir(path)
+    os.chdir(path_)
     yield cwd
     os.chdir(cwd)
 
@@ -147,6 +147,23 @@ def uninstall():
         fn.write(stdin)
         fn.seek(0)
         shell(f'cat {fn.name} | xargs pip uninstall -y')
+
+
+@main.command()
+@click.option('--development/--no-development', default=True, help='install development requirements.')
+@click.option('--idempotent/--no-idempotent', default=True, help='uninstall current packages before installing.')
+def install(development, idempotent):
+    """
+    Install Python dependencies.
+    """
+    context = click.get_current_context()
+    if idempotent:
+        context.invoke(uninstall)
+
+    development_flag = '-d' if development else ''
+
+    shell(f'pipenv install {development_flag}')
+    shell('python setup.py develop')
 
 
 @main.command()
