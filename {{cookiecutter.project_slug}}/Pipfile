@@ -4,12 +4,11 @@ verify_ssl = true
 
 [packages]
 attrs = "*"
-{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}click = "*"{% endif %}
+click = "*"
 
 [dev-packages]
 "autopep8" = "*"
 bumpversion = "*"
-click = "*"
 coverage = "*"
 cryptography = "*"
 flake8 = "*"

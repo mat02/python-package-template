@@ -1,23 +1,43 @@
 #!/usr/bin/env python
-"""Local project task runner"""
+"""Task runner for the {{ cookiecutter.package_name }} project."""
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 from textwrap import dedent
+from pathlib import Path
 import subprocess as sp
 import typing as T
 import copy
 import os
+import re
 
 import click
 
 
-def shell(command: str) -> sp.CompletedProcess:
-    """Run the command in a shell."""
+def shell(command: str, check=True) -> sp.CompletedProcess:
+    """
+    Run the command in a shell.
+
+    Args:
+        command: the command to be run
+        check: raise exception if return code not zero
+
+    Returns: Completed Process
+
+    """
     user = os.getlogin()
     print(f'{user}: {command}')
-    process = sp.run(command, shell=True)
+    process = sp.run(command, check=check, shell=True)
     print()
     return process
+
+
+@contextmanager
+def cd(path_: T.Union[os.PathLike, str]):
+    """Change the current working directory."""
+    cwd = os.getcwd()
+    os.chdir(path_)
+    yield
+    os.chdir(cwd)
 
 
 @contextmanager
@@ -62,15 +82,6 @@ def path(*paths: os.PathLike, prepend=False) -> T.List[str]:
 
 
 @contextmanager
-def cd(path_: os.PathLike) -> os.PathLike:
-    """Change the current working directory and yield the last cwd."""
-    cwd = os.getcwd()
-    os.chdir(path_)
-    yield cwd
-    os.chdir(cwd)
-
-
-@contextmanager
 def quiet():
     """
     Suppress stdout and stderr.
@@ -107,7 +118,15 @@ def quiet():
 @click.group()
 def main():
     """Project tasks."""
-    pass
+
+    # ensure we're running commands from project root
+
+    root = Path(__file__).parent.absolute()
+    cwd = Path().absolute()
+
+    if root != cwd:
+        raise EnvironmentError(os.linesep.join(map(
+            str, ('', 'You should running this from', root, "You're currently in", cwd))))
 
 
 def release():
@@ -119,7 +138,7 @@ def release():
     shell('twine upload dist/*')
 
 
-@main.group()
+@main.command()
 def dist():
     """Build source and wheel package."""
     context = click.get_current_context()
@@ -128,17 +147,23 @@ def dist():
     shell('python setup.py bdist_wheel')
 
 
-@main.group()
+@main.command()
 def uninstall():
     """Uninstalls all Python dependencies."""
+
+    patt = re.compile(r'\w+=(\w+)')
 
     packages = []
 
     for line in sp.run(('pip', 'freeze'), stdout=sp.PIPE).stdout.decode().splitlines():
         if '==' in line:
             package, *_ = line.split('==')
-        elif '#egg=' in line:
-            *_, package = line.split('egg=')
+
+        match = patt.search(line)
+
+        if match:
+            *_, package = match.groups()
+
         packages.append(package)
 
     stdin = os.linesep.join(packages).encode()
@@ -278,11 +303,11 @@ def publish_docs():
     Logic borrowed from `hugo <https://gohugo.io/tutorials/github-pages-blog/>`
     """
 
-    if shell('git diff-index --quiet HEAD --').status_code != 0:
+    if shell('git diff-index --quiet HEAD --', check=False).status_code != 0:
         shell('git status')
         raise EnvironmentError('The working directory is dirty. Please commit any pending changes.')
 
-    if shell('git show-ref refs/heads/gh-pages').status_code != 0:
+    if shell('git show-ref refs/heads/gh-pages', check=False).status_code != 0:
         # initialized github pages branch
         shell(dedent("""
             git checkout --orphan gh-pages
