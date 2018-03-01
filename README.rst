@@ -49,13 +49,13 @@ Generate a Python package project
     pip install -e .[dev]
 
 The last step will install the task runner at the root of the repo, **run.py** as a command-line
-utility `{{project_slug}}_tasks`. Feel free to rename it in setup.py if you like. This is just to avoid
+utility ``{{project_slug}}_tasks``. Feel free to rename it in setup.py if you like. This is just to avoid
 name conflicts with other packages that may use this pattern.
 
 Development
 -----------
 
-You should now have a command-line tool `{{project_slug}}_tasks` which you can use to execute common tasks.
+You should now have a command-line tool ``{{project_slug}}_tasks`` which you can use to execute common tasks.
 
 This is just a shortcut to the **run.py** file at the root of your project, which can be invoked via::
 
