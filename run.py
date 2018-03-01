@@ -9,13 +9,31 @@ import os
 import click
 
 
-def shell(command: str) -> sp.CompletedProcess:
-    """Run the command in a shell."""
+def shell(command: str, check=True) -> sp.CompletedProcess:
+    """
+    Run the command in a shell.
+
+    Args:
+        command: the command to be run
+        check: raise exception if return code not zero
+
+    Returns: Completed Process
+
+    """
     user = os.getlogin()
     print(f'{user}: {command}')
-    process = sp.run(command, shell=True)
+    process = sp.run(command, check=check, shell=True)
     print()
     return process
+
+
+@contextmanager
+def cd(path_: T.Union[os.PathLike, str]):
+    """Change the current working directory."""
+    cwd = os.getcwd()
+    os.chdir(path_)
+    yield
+    os.chdir(cwd)
 
 
 @contextmanager
@@ -57,15 +75,6 @@ def path(*paths: os.PathLike, prepend=False) -> T.List[str]:
 
     with env(PATH=':'.join(paths)):
         yield paths
-
-
-@contextmanager
-def cd(path: os.PathLike) -> os.PathLike:
-    """Change the current working directory and yield the last cwd."""
-    cwd = os.getcwd()
-    os.chdir(path)
-    yield cwd
-    os.chdir(cwd)
 
 
 @contextmanager
