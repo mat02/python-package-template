@@ -31,10 +31,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            '{{ cookiecutter.project_slug }}_tasks=run:main',
-            {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
             '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
-            {% endif %}
         ]
     },
 )

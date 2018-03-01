@@ -58,19 +58,20 @@ def env(**kwargs) -> dict:
 
 
 @contextmanager
-def path(*paths: os.PathLike, prepend=False) -> T.List[str]:
+def path(*paths: os.PathLike, prepend=False, expand_user=True) -> T.List[str]:
     """
     Add the paths to $PATH and yield the new $PATH as a list.
 
     Args:
         prepend: prepend paths to $PATH else append
+        expand_user: expands home if ~ is used in path strings
     """
     paths = list(paths)
 
     for index, _path in enumerate(paths):
         if not isinstance(_path, str):
             paths[index] = _path.__fspath__()
-        elif '~' in _path:
+        elif expand_user:
             paths[index] = os.path.expanduser(_path)
 
     original_path = os.environ['PATH'].split(':')
@@ -117,7 +118,10 @@ def quiet():
 
 @click.group()
 def main():
-    """Project tasks."""
+    """
+    Development tasks for {{ cookiecutter.package_name }}
+
+    """
 
     # ensure we're running commands from project root
 
@@ -125,8 +129,9 @@ def main():
     cwd = Path().absolute()
 
     if root != cwd:
-        raise EnvironmentError(os.linesep.join(map(
-            str, ('', 'You should running this from', root, "You're currently in", cwd))))
+        click.secho(f'Navigating from {cwd} to {root}',
+                    fg='yellow')
+        os.chdir(root)
 
 
 @main.command()
@@ -182,7 +187,7 @@ def install(development, idempotent):
     development_flag = '-d' if development else ''
 
     shell(f'pipenv install {development_flag}')
-    shell('pip install -e .')
+    shell('pip install -e .[dev]')
 
 
 @main.command()
@@ -198,8 +203,12 @@ def dist():
 def release():
     """Package and upload a release to pypi."""
     context = click.get_current_context()
-    for command in (test_readme, clean, tox, publish_docs):
-        context.invoke(command)
+
+    context.invoke(test_readme)
+    context.invoke(tox)
+    context.invoke(clean, all=True)
+    context.invoke(publish_docs, no_browser=True)
+
     shell('python setup.py sdist bdist_wheel')
     shell('twine upload dist/*')
 
@@ -207,9 +216,10 @@ def release():
 def clean_build():
     """Remove build artifacts."""
     click.confirm('This will uninstall the {{cookiecutter.project_slug}}_tasks cli. '
-                  'You may need to run setup.py develop to reinstall it. '
+                  'You may need to run `pip install -e .` or use setup.py to reinstall it. '
                   'Continue?',
                   abort=True)
+
     shell('rm -fr build/')
     shell('rm -fr dist/')
     shell('rm -rf .eggs/')

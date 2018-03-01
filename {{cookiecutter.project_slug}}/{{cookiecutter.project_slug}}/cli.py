@@ -10,6 +10,8 @@ from pathlib import Path
 import re
 import os
 
+from run import main as development_tasks
+
 import click
 
 
@@ -17,6 +19,9 @@ import click
 def main():
     """A cli for {{ cookiecutter.package_name }}."""
     pass
+
+
+main.add_command(development_tasks, name='dev')
 
 
 def transform_module_text(matchobj):
