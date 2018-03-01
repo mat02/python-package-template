@@ -198,12 +198,11 @@ def autopep8():
 
 
 @main.command()
-def test_readme_rst():
+def test_readme():
     """Test README.rst to ensure it will render correctly in warehouse."""
     shell('python setup.py check -r -s')
 
 
-@main.command()
 def clean_build():
     """Remove build artifacts."""
     click.confirm('This will uninstall the run cli. '
@@ -217,7 +216,6 @@ def clean_build():
     shell("find . -name '*.egg' -exec rm -f {} +")
 
 
-@main.command()
 def clean_pyc():
     """Remove Python file artifacts."""
     shell("find . -name '*.pyc' -exec rm -f {} +")
@@ -226,7 +224,6 @@ def clean_pyc():
     shell("find . -name '__pycache__' -exec rm -fr {} +")
 
 
-@main.command()
 def clean_test():
     """Remove test and coverage artifacts."""
     shell('rm -fr .tox/')
@@ -235,11 +232,27 @@ def clean_test():
 
 
 @main.command()
-def clean():
+@click.option('--pyc', is_flag=True, help=clean_pyc.__doc__)
+@click.option('--test', is_flag=True, help=clean_test.__doc__)
+@click.option('--build', is_flag=True, help=clean_build.__doc__)
+@click.option('--all', is_flag=True, help='Clean all files.')
+def clean(pyc, test, build, all):
     """Remove all build, test, coverage and Python artifacts."""
-    context = click.get_current_context()
-    for command in (clean_build, clean_pyc, clean_test):
-        context.invoke(command)
+    fn_flag = (
+        (clean_pyc, pyc),
+        (clean_test, test),
+        (clean_build, build)
+    )
+
+    if all:
+        clean_pyc()
+        clean_test()
+        clean_build()
+        return
+
+    for fn, flag in fn_flag:
+        if flag:
+            fn()
 
 
 @main.command()
@@ -251,7 +264,7 @@ def test(capture, pdb):
     """
     flags = ' '.join([
         '-s' if not capture else '',
-        '--pdb' if capture else ''
+        '--pdb' if pdb else ''
     ])
     shell('py.test tests/' + ' ' + flags)
 
