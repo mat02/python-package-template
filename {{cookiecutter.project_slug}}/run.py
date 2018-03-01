@@ -129,22 +129,16 @@ def main():
             str, ('', 'You should running this from', root, "You're currently in", cwd))))
 
 
-def release():
-    """Package and upload a release to pypi."""
-    context = click.get_current_context()
-    for command in (test_readme, clean, tox, publish_docs):
-        context.invoke(command)
-    shell('python setup.py sdist bdist_wheel')
-    shell('twine upload dist/*')
+@main.command()
+def autopep8():
+    """Autopep8 modules."""
+    shell('autopep8 -i -r fabfile.py {{ cookiecutter.project_slug }}/ tests/')
 
 
 @main.command()
-def dist():
-    """Build source and wheel package."""
-    context = click.get_current_context()
-    context.invoke(clean)
-    shell('python setup.py sdist')
-    shell('python setup.py bdist_wheel')
+def test_readme():
+    """Test README.rst to ensure it will render correctly in warehouse."""
+    shell('python setup.py check -r -s')
 
 
 @main.command()
@@ -192,15 +186,22 @@ def install(development, idempotent):
 
 
 @main.command()
-def autopep8():
-    """Autopep8 modules."""
-    shell('autopep8 -i -r fabfile.py {{ cookiecutter.project_slug }}/ tests/')
+def dist():
+    """Build source and wheel package."""
+    context = click.get_current_context()
+    context.invoke(clean)
+    shell('python setup.py sdist')
+    shell('python setup.py bdist_wheel')
 
 
 @main.command()
-def test_readme():
-    """Test README.rst to ensure it will render correctly in warehouse."""
-    shell('python setup.py check -r -s')
+def release():
+    """Package and upload a release to pypi."""
+    context = click.get_current_context()
+    for command in (test_readme, clean, tox, publish_docs):
+        context.invoke(command)
+    shell('python setup.py sdist bdist_wheel')
+    shell('twine upload dist/*')
 
 
 def clean_build():
