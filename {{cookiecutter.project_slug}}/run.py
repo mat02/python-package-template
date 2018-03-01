@@ -180,6 +180,11 @@ def install(development, idempotent):
     """
     Install Python dependencies.
     """
+    click.confirm("Only use this if you're using pipenv "
+                  "as your virtualenv and dependency management tool. "
+                  "Continue?",
+                  abort=True)
+
     context = click.get_current_context()
     if idempotent:
         context.invoke(uninstall)
@@ -194,7 +199,7 @@ def install(development, idempotent):
 def dist():
     """Build source and wheel package."""
     context = click.get_current_context()
-    context.invoke(clean)
+    context.invoke(clean, build=True)
     shell('python setup.py sdist')
     shell('python setup.py bdist_wheel')
 
