@@ -132,7 +132,7 @@ def main():
 def release():
     """Package and upload a release to pypi."""
     context = click.get_current_context()
-    for command in (test_readme_rst, clean, tox, publish_docs):
+    for command in (test_readme, clean, tox, publish_docs):
         context.invoke(command)
     shell('python setup.py sdist bdist_wheel')
     shell('twine upload dist/*')
@@ -188,7 +188,7 @@ def install(development, idempotent):
     development_flag = '-d' if development else ''
 
     shell(f'pipenv install {development_flag}')
-    shell('python setup.py develop')
+    shell('pip install -e .')
 
 
 @main.command()
@@ -205,8 +205,8 @@ def test_readme():
 
 def clean_build():
     """Remove build artifacts."""
-    click.confirm('This will uninstall the run cli. '
-                  'You will may need to run setup.py develop to reinstall. '
+    click.confirm('This will uninstall the {{cookiecutter.project_slug}}_tasks cli. '
+                  'You may need to run setup.py develop to reinstall it. '
                   'Continue?',
                   abort=True)
     shell('rm -fr build/')
@@ -293,7 +293,7 @@ def coverage(no_browser):
 @click.option('--no-browser', is_flag=True, help="Don't open browser after building docs.")
 def docs(no_browser):
     """
-    Generage Sphinx HTML documentation, including API docs.
+    Generate Sphinx HTML documentation, including API docs.
     """
     shell('rm -f docs/{{ cookiecutter.project_slug }}.rst')
     shell('rm -f docs/modules.rst')
@@ -320,11 +320,11 @@ def publish_docs():
     Logic borrowed from `hugo <https://gohugo.io/tutorials/github-pages-blog/>`
     """
 
-    if shell('git diff-index --quiet HEAD --', check=False).status_code != 0:
+    if shell('git diff-index --quiet HEAD --', check=False).returncode != 0:
         shell('git status')
         raise EnvironmentError('The working directory is dirty. Please commit any pending changes.')
 
-    if shell('git show-ref refs/heads/gh-pages', check=False).status_code != 0:
+    if shell('git show-ref refs/heads/gh-pages', check=False).returncode != 0:
         # initialized github pages branch
         shell(dedent("""
             git checkout --orphan gh-pages
@@ -348,8 +348,18 @@ def publish_docs():
     # push to github
     with cd('public'):
         shell('git add .')
-        shell('git commit -m "Publishing to gh-pages (Fabfile)"')
+        shell('git commit -m "Publishing to gh-pages (automated)"', check=False)
         shell('git push origin gh-pages')
+
+    remotes = sp.run('git remote -v', shell=True, stdout=sp.PIPE).stdout.decode()
+
+    match = re.search('github.com:(\w+)/(\w+).git', remotes)
+
+    if match:
+        user, repo = match.groups()
+        click.secho(f'Your documentation is viewable at '
+                    f'https://{user}.github.io/{repo}',
+                    fg='green')
 
 
 if __name__ == '__main__':

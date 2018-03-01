@@ -18,18 +18,16 @@ Features
 * Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
-* Fabric_ for task automation
 * Optional command line interface with Click_
 
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_, `pipenv`_, and `fabric`_ if you haven't installed it yet.
+Install the latest `Cookiecutter`_ and `pipenv`_ if you haven't installed it yet.
 
 .. code-block:: bash
 
     brew install cookiecutter pipenv
-    pip3 install fabric3
 
 
 Generate a Python package project
@@ -46,41 +44,48 @@ Generate a Python package project
 
     pipenv shell
 
-    # install requirements
+    # install package dependencies
 
-    fab install
+    pip install -e .[dev]
+
+The last step will install the task runner at the root of the repo, **run.py** as a command-line
+utility `{{project_slug}}_tasks`. Feel free to rename it in setup.py if you like. This is just to avoid
+name conflicts with other packages that may use this pattern.
 
 Development
 -----------
 
-Upon creating your project and installing the requirements necessary for development, these are some of the options fabric_
-will provide via the generated fabfile.
+You should now have a command-line tool `{{project_slug}}_tasks` which you can use to execute common tasks.
 
-Prepend ``fab`` to the following commands from project root:
+This is just a shortcut to the **run.py** file at the root of your project, which can be invoked via::
 
-.. code-block:: bash
+    ./run.py
+    # or
+    python -m run
 
-    clean                 Remove all build, test, coverage and Python artifacts.
-    clean_build           Remove build artifacts.
-    clean_pyc             Remove Python file artifacts.
-    clean_test            Remove test and coverage artifacts.
-    coverage              Check code coverage quickly with the default Python.
-    dist                  Build source and wheel package.
-    docs                  Generage Sphinx HTML documentation, including API docs.
-    publish_docs          Compile docs and publish to GitHub Pages.
-    release               Package and upload a release to pypi.
-    test                  Run tests quickly with default Python.
-    test_all              Run on multiple Python versions with tox.
-    tox                   Run on multiple Python versions with tox.
+The following are some of the sub-commands you may find::
+
+    Commands:
+      autopep8      Autopep8 modules.
+      clean         Remove all build, test, coverage and Python...
+      coverage      Check code coverage quickly with the default...
+      dist          Build source and wheel package.
+      docs          Generate Sphinx HTML documentation, including...
+      install       Install Python dependencies.
+      publish_docs  Compile docs and publish to GitHub Pages.
+      test          Run tests quickly with default Python.
+      test_readme   Test README.rst to ensure it will render...
+      tox           Run tests in isolated environments using tox.
+      uninstall     Uninstalls all Python dependencies.
 
 
 Upon pushing your project to github, I suggest immediately running
 
 .. code-block:: bash
 
-    fab publish_docs
+    ./run.py publish_docs
 
-and navigating to ``http://{your_github_username}.github.io/{repo_name}`` to witness your documentation
+and navigating to ``https://{your_github_username}.github.io/{repo_name}`` to witness your documentation
 immediately rendered and available in all its glory. Cool stuff.
 
 Additional Options
