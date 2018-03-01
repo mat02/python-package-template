@@ -206,6 +206,10 @@ def test_readme_rst():
 @main.command()
 def clean_build():
     """Remove build artifacts."""
+    click.confirm('This will uninstall the run cli. '
+                  'You will need to run setup.py develop to reinstall. '
+                  'Continue?',
+                  abort=True)
     shell('rm -fr build/')
     shell('rm -fr dist/')
     shell('rm -rf .eggs/')
