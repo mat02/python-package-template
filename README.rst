@@ -48,7 +48,7 @@ Generate a Python package project
 
     pip install -e .[dev]
 
-The last step will install the task runner at the root of the repo, **run.py** as a command-line
+The last step will install the task runner at the root of the repo, `run.py`_ as a command-line
 utility ``{{project_slug}} dev``.
 
 Development
@@ -116,4 +116,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _run.py: /
+.. _run.py: run.py
