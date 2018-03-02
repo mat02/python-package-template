@@ -30,21 +30,17 @@
 Installation
 ------------
 
-You don't need it, but it helps to have fabric installed globally first.::
-
-    pip3 install fabric3
-
-::
 
     git clone {this repo}
     cd project_directory
+    # activate your venv i.e.
     pipenv shell
-    fab install
+    pip install -e .[dev]
 
 Usage
 ---------
 
 ::
 
-    fab runserver
-    fab deploy
+    {{cookiecutter.project_slug}} runserver
+    {{cookiecutter.project_slug}} deploy
