@@ -19,6 +19,24 @@ def main():
     pass
 
 
+@main.command()
+def update_cli_module_docstring():
+    """
+    Replace this module's docstring with the one generated from top-level cli entrypoint.
+
+    we do this for the sake of having the module docstring reflect what the cli does
+    which is useful particularly since sphinx will use the module's docstring in the
+    package documentation it generates
+    """
+    transformed_module_text = re.sub(
+        re.compile(r'(.*?)(from|import)(.*)', re.DOTALL | re.MULTILINE),
+        transform_module_text,
+        Path(__file__).read_text()
+    )
+    with Path(__file__).open('w') as this_module:
+        this_module.write(transformed_module_text)
+
+
 # the following import will only work if the
 # package was installed in editable (development)
 # mode, which is what we want
@@ -38,19 +56,6 @@ def transform_module_text(matchobj):
 
     return docstring + os.linesep + ''.join(matchobj.groups()[1:])
 
-
-# replace this module's docstring with the one generated from top-level cli entrypoint
-# we do this for the sake of having the module docstring reflect what the cli does
-# which is useful particularly since sphinx will use the module's docstring in the
-# package documentation it generates
-
-transformed_module_text = re.sub(
-    re.compile(r'(.*?)(from|import)(.*)', re.DOTALL | re.MULTILINE),
-    transform_module_text,
-    Path(__file__).read_text()
-)
-with Path(__file__).open('w') as this_module:
-    this_module.write(transformed_module_text)
 
 if __name__ == "__main__":
     main()

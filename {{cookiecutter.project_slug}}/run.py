@@ -377,7 +377,7 @@ def publish_docs():
         shell('git commit -m "Publishing to gh-pages (automated)"', check=False)
         shell('git push origin gh-pages')
 
-    remotes = sp.run('git remote -v', shell=True, stdout=sp.PIPE).stdout.decode()
+    remotes = shell('git remote -v', capture=True).stdout.decode()
 
     match = re.search('github.com:(\w+)/(\w+).git', remotes)
 
