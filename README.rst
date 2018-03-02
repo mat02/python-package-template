@@ -56,8 +56,11 @@ Development
 
 You should now have a command-line tool ``{{project_slug}} dev`` which you can use to execute common tasks.
 
-This is just a shortcut to the **run.py** file at the root of your project, which can be invoked via::
+This is just a shortcut to the **run.py** file at the root of your project,
+meaning you have 3 ways of executing the task runner::
 
+    {{project_slug}} dev
+    # or, from project root
     ./run.py
     # or
     python -m run
