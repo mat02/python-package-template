@@ -56,7 +56,7 @@ Development
 
 You should now have a command-line tool ``{{project_slug}} dev`` which you can use to execute common tasks.
 
-This is just a shortcut to the **run.py** file at the root of your project,
+This is just a shortcut to the `run.py`_ file at the root of your project,
 meaning you have 3 ways of executing the task runner::
 
     {{project_slug}} dev
@@ -116,3 +116,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _run.py: /{{cookiecutter.project_slug}}/run.py
