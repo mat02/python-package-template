@@ -60,9 +60,13 @@ This is just a shortcut to the **run.py** file at the root of your project,
 meaning you have 3 ways of executing the task runner::
 
     {{project_slug}} dev
+
     # or, from project root
+
     ./run.py
+
     # or
+
     python -m run
 
 The following are some of the sub-commands you may find::
