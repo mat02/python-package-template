@@ -23,7 +23,7 @@ Features
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_ and `pipenv`_ if you haven't installed it yet.
+Install the latest `Cookiecutter`_ and `pipenv`_ (optional, but highly recommended) if you haven't installed it yet.
 
 .. code-block:: bash
 
@@ -42,9 +42,9 @@ Generate a Python package project
 
     # create and activate virtualenv environment
 
-    pipenv shell
+    pipenv shell # or whatever you use to manage your venvs
 
-    # install package dependencies
+    # install package dependencies within venv
 
     pip install -e .[dev]
 
