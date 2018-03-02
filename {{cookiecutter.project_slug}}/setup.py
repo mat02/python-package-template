@@ -29,11 +29,9 @@ setup(
         'test': development,
         'testing': development,
     },
-    {% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
     entry_points={
         'console_scripts': [
             '{{ cookiecutter.project_slug }}={{ cookiecutter.project_slug }}.cli:main'
         ]
     },
-    {% endif %}
 )

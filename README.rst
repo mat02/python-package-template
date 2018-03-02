@@ -17,18 +17,16 @@ Features
 * Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
-* Fabric_ for task automation
 * Command line interface with Click_
 
 Quickstart
 ----------
 
-Install the latest `Cookiecutter`_, `pipenv`_, and `fabric`_ if you haven't installed it yet.
+Install the latest `Cookiecutter`_ and `pipenv`_ (optional, but highly recommended) if you haven't installed it yet.
 
 .. code-block:: bash
 
     brew install cookiecutter pipenv
-    pip3 install fabric3
 
 
 Generate a Python package project
@@ -43,43 +41,64 @@ Generate a Python package project
 
     # generate the virtual environment and activate it
 
-    pipenv shell
+    pipenv shell # or whatever you use to manage your venvs
 
-    # install dependencies
+    # install package dependencies within venv
 
-    fab install
+    pip install -e .[dev]
+
+The last step will install the task runner at the root of the repo, `run.py`_ as a command-line
+utility ``{{project_slug}} dev``.
 
     # to run the development server
 
-    fab runserver
+    {{project_slug}} runserver
 
     # deploy
 
-    fab deploy
+    {{project_slug}} deploy
 
 Development
 -----------
 
-Upon creating your project and installing the requirements necessary for development, these are some of the options fabric_
-will provide via the generated fabfile.
+You should now have a command-line tool ``{{project_slug}} dev`` which you can use to execute common tasks.
 
-Prepend ``fab`` to the following commands from project root:
+This is just a shortcut to the `run.py`_ file at the root of your project,
+meaning you have 3 ways of executing the task runner::
 
-.. code-block:: bash
+    {{project_slug}} dev
 
-    deploy                Deploy to cloudfoundry.
-    clean                 Remove all build, test, coverage and Python artifacts.
-    clean_build           Remove build artifacts.
-    clean_pyc             Remove Python file artifacts.
-    clean_test            Remove test and coverage artifacts.
-    coverage              Check code coverage quickly with the default Python.
-    dist                  Build source and wheel package.
-    docs                  Generage Sphinx HTML documentation, including API docs.
-    test                  Run tests quickly with default Python.
-    tox                   Run on multiple Python versions with tox.
+    # or, from project root
+
+    ./run.py
+
+    # or
+
+    python -m run
+
+The following are some of the sub-commands you may find::
+
+    Commands:
+      autopep8      Autopep8 modules.
+      clean         Remove all build, test, coverage and Python...
+      coverage      Check code coverage quickly with the default...
+      dist          Build source and wheel package.
+      docs          Generate Sphinx HTML documentation, including...
+      install       Install Python dependencies.
+      publish_docs  Compile docs and publish to GitHub Pages.
+      test          Run tests quickly with default Python.
+      test_readme   Test README.rst to ensure it will render...
+      tox           Run tests in isolated environments using tox.
+      uninstall     Uninstalls all Python dependencies.
 
 
-For more details, see the `cookiecutter-pypackage tutorial`_.
+Additional Options
+------------------
+
+* Create a GitHub repo for your generated project.
+* Add the repo to your Travis-CI_ account.
+* Activate your project on `pyup.io`_. (if using pipenv, you can generate requirements.txt with ``pipenv lock -r``)
+
 
 .. _`cookiecutter-pypackage tutorial`: https://cookiecutter-pypackage.readthedocs.io/en/latest/tutorial.html
 .. _Travis-CI: http://travis-ci.org/
@@ -89,9 +108,9 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _Bumpversion: https://github.com/peritus/bumpversion
 .. _PyPi: https://pypi.python.org/pypi
 .. _`pipfile`: https://github.com/pypa/pipfile
-.. _`fabric`: http://www.fabfile.org/
 .. _`github pages`: https://pages.github.com/
 .. _`cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _run.py: {{cookiecutter.project_slug}}/run.py

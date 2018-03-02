@@ -3,7 +3,6 @@ Welcome to {{ cookiecutter.package_name }}'s documentation!
 
 .. include:: ../README.rst
 
-{% if cookiecutter.cli.lower() == 'y' or cookiecutter.cli.lower() == 'yes' %}
 Command Line Interface
 ----------------------
 
@@ -11,7 +10,6 @@ Command Line Interface
     :start-after: """
     :end-before: """
     :literal:
-{% endif %}
 
 API Documentation
 -----------------
