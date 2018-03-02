@@ -378,5 +378,13 @@ def publish_docs():
                     fg='green')
 
 
+@main.command()
+def update_vendor():
+    """
+    Update required vendor libraries."""
+    shell('rm -rf .vendor/')
+    shell('pip install pipenv --target .vendor')
+
+
 if __name__ == '__main__':
     main()

@@ -10,8 +10,6 @@ from pathlib import Path
 import re
 import os
 
-from run import main as development_tasks
-
 import click
 
 
@@ -21,7 +19,16 @@ def main():
     pass
 
 
-main.add_command(development_tasks, name='dev')
+# the following import will only work if the
+# package was installed in editable (development)
+# mode, which is what we want
+
+try:
+    from run import main as development_tasks
+
+    main.add_command(development_tasks, name='dev')
+except (ImportError, ModuleNotFoundError):
+    pass
 
 
 def transform_module_text(matchobj):
@@ -33,6 +40,10 @@ def transform_module_text(matchobj):
 
 
 # replace this module's docstring with the one generated from top-level cli entrypoint
+# we do this for the sake of having the module docstring reflect what the cli does
+# which is useful particularly since sphinx will use the module's docstring in the
+# package documentation it generates
+
 transformed_module_text = re.sub(
     re.compile(r'(.*?)(from|import)(.*)', re.DOTALL | re.MULTILINE),
     transform_module_text,
