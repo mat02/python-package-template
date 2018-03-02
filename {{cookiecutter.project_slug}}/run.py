@@ -137,7 +137,7 @@ def main():
 @main.command()
 def autopep8():
     """Autopep8 modules."""
-    shell('autopep8 -i -r fabfile.py {{ cookiecutter.project_slug }}/ tests/')
+    shell('autopep8 -i -r {{ cookiecutter.project_slug }}/ tests/')
 
 
 @main.command()
