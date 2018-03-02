@@ -264,11 +264,10 @@ def clean(pyc, test, build, all):
         clean_pyc()
         clean_test()
         clean_build()
-        return
-
-    for fn, flag in fn_flag:
-        if flag:
-            fn()
+    else:
+        for fn, flag in fn_flag:
+            if flag:
+                fn()
 
 
 @main.command()
