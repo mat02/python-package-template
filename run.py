@@ -9,20 +9,31 @@ import os
 import click
 
 
-def shell(command: str, check=True) -> sp.CompletedProcess:
+def shell(command: str, check=True, capture=False) -> sp.CompletedProcess:
     """
     Run the command in a shell.
 
     Args:
         command: the command to be run
         check: raise exception if return code not zero
+        capture: if set to True, captures stdout and stderr,
+                 making them available as stdout and stderr
+                 attributes on the returned CompletedProcess.
+
+                 This also means the command's stdout and stderr won't be
+                 piped to FD 1 and 2 by default
 
     Returns: Completed Process
 
     """
     user = os.getlogin()
     print(f'{user}: {command}')
-    process = sp.run(command, check=check, shell=True)
+    process = sp.run(command,
+                     check=check,
+                     shell=True,
+                     stdout=sp.PIPE if capture else None,
+                     stderr=sp.PIPE if capture else None
+                     )
     print()
     return process
 
