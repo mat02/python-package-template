@@ -18,7 +18,7 @@ Features
 * Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
-* Optional command line interface with Click_
+* Command line interface with Click_
 
 Quickstart
 ----------
