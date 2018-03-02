@@ -116,4 +116,4 @@ For more details, see the `cookiecutter-pypackage tutorial`_.
 .. _`Click`: http://click.pocoo.org/
 .. _`pipenv`: http://docs.pipenv.org/en/latest/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _run.py: /{{cookiecutter.project_slug}}/run.py
+.. _run.py: http://google.com
