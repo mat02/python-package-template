@@ -421,7 +421,7 @@ def publish_docs():
     with cd('public'):
         shell('git add .')
         shell('git commit -m "Publishing to gh-pages (automated)"', check=False)
-        shell('git push origin gh-pages')
+        shell('git push origin gh-pages --force')
 
     remotes = shell('git remote -v', capture=True).stdout.decode()
 
