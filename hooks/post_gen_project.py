@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from pathlib import Path
 import os
+import textwrap
 
 PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
 
@@ -13,13 +13,27 @@ def install_hooks():
     """
     Install git hooks to make life easier.
     """
-    hooks_path = Path('{{cookiecutter.project_slug}}/.git/hooks/')
 
-    os.makedirs(hooks_path, exist_ok=True)
+    git_hooks_path = os.path.join(PROJECT_DIRECTORY, '.git/hooks/')
 
-    pre_push_path = Path(hooks_path, 'pre-push')
+    if not os.path.exists(git_hooks_path):
+        os.makedirs(git_hooks_path)
 
-    pre_push_path.write_text('{{cookiecutter.project_slug}} dev test')
+    pre_push_path = os.path.join(git_hooks_path, 'pre-push')
+
+    with open(pre_push_path, 'w') as fd:
+
+        msg = textwrap.dedent("""
+        make sure your virtualenv is activated
+        and your project is installed
+        `pip install -e .[dev]`
+        """)
+
+        fd.write("""
+        echo '{msg}' && {{cookiecutter.project_slug}} dev test
+        """.format(msg=msg).strip())
+
+    os.chmod(pre_push_path, 0o755)
 
 
 if __name__ == '__main__':
