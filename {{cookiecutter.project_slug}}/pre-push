@@ -1,0 +1,11 @@
+msg='
+make sure your virtualenv is activated
+and your project is installed
+`pip install -e .[dev]`
+'
+
+echo "$msg"
+
+{{cookiecutter.project_slug}} dev autopep8 --auto-commit
+{{cookiecutter.project_slug}} dev test
+{{cookiecutter.project_slug}} dev mypy
