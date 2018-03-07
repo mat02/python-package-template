@@ -21,19 +21,13 @@ def install_hooks():
 
     pre_push_path = os.path.join(git_hooks_path, 'pre-push')
 
-    with open(pre_push_path, 'w') as fd:
-
-        msg = textwrap.dedent("""
-        make sure your virtualenv is activated
-        and your project is installed
-        `pip install -e .[dev]`
-        """)
-
-        fd.write("""
-        echo '{msg}' && {{cookiecutter.project_slug}} dev test
-        """.format(msg=msg).strip())
+    with open(pre_push_path, 'w') as dest:
+        with open(os.path.join(PROJECT_DIRECTORY, 'pre-push')) as src:
+            dest.write(src.read())
 
     os.chmod(pre_push_path, 0o755)
+
+    remove_file('pre-push')
 
 
 if __name__ == '__main__':

@@ -12,6 +12,8 @@ import re
 
 import click
 
+Pathy = T.Union[os.PathLike, str]
+
 
 def shell(command: str, check=True, capture=False) -> sp.CompletedProcess:
     """
@@ -43,7 +45,7 @@ def shell(command: str, check=True, capture=False) -> sp.CompletedProcess:
 
 
 @contextmanager
-def cd(path_: T.Union[os.PathLike, str]):
+def cd(path_: Pathy):
     """Change the current working directory."""
     cwd = os.getcwd()
     os.chdir(path_)
@@ -52,7 +54,7 @@ def cd(path_: T.Union[os.PathLike, str]):
 
 
 @contextmanager
-def env(**kwargs) -> dict:
+def env(**kwargs) -> T.Iterator[os._Environ]:
     """Set environment variables and yield new environment dict."""
     original_environment = copy.deepcopy(os.environ)
 
@@ -69,7 +71,7 @@ def env(**kwargs) -> dict:
 
 
 @contextmanager
-def path(*paths: T.Union[os.PathLike, str], prepend=False, expand_user=True) -> T.List[str]:
+def path(*paths: Pathy, prepend=False, expand_user=True) -> T.Iterator[T.List[str]]:
     """
     Add the paths to $PATH and yield the new $PATH as a list.
 
@@ -77,20 +79,22 @@ def path(*paths: T.Union[os.PathLike, str], prepend=False, expand_user=True) -> 
         prepend: prepend paths to $PATH else append
         expand_user: expands home if ~ is used in path strings
     """
-    paths = list(paths)
+    paths_list: T.List[Pathy] = list(paths)
 
-    for index, _path in enumerate(paths):
+    paths_str_list: T.List[str]
+
+    for index, _path in enumerate(paths_list):
         if not isinstance(_path, str):
-            paths[index] = _path.__fspath__()
+            paths_str_list[index] = _path.__fspath__()
         elif expand_user:
-            paths[index] = os.path.expanduser(_path)
+            paths_str_list[index] = os.path.expanduser(_path)
 
     original_path = os.environ['PATH'].split(':')
 
-    paths = paths + original_path if prepend else original_path + paths
+    paths_str_list = paths_str_list + original_path if prepend else original_path + paths_str_list
 
-    with env(PATH=':'.join(paths)):
-        yield paths
+    with env(PATH=':'.join(paths_str_list)):
+        yield paths_str_list
 
 
 @contextmanager
@@ -149,8 +153,7 @@ def main():
 @click.option('--host', default='127.0.0.1')
 @click.option('--port', default=8000)
 def runserver(host, port):
-    """Runs local development server using {{ cookiecutter.package_name }}
-'s own cli."""
+    """Runs local development server using {{ cookiecutter.package_name }}'s own cli."""
     shell(f'python -m {{cookiecutter.project_slug}}.cli runserver --host {host} --port {port}')
 
 
@@ -191,10 +194,36 @@ def deploy():
         context.invoke(install)
 
 
+@click.argument('args', type=str, nargs=-1)
+def mypy(args):
+    """
+    Validate code with mypy.
+
+    Args:
+        args: these will be passed to mypy as-is
+    """
+    shell('mypy {{ cookiecutter.project_slug }} ' + ' '.join(args))
+
+
 @main.command()
-def autopep8():
+@click.option('--auto-commit', is_flag=True, help='auto-commit if files changed')
+def autopep8(auto_commit):
     """Autopep8 modules."""
+
+    def working_directory_dirty():
+        """Return True if the git working directory is dirty."""
+        return shell('git diff-index --quiet HEAD --', check=False).returncode != 0
+
+    if auto_commit and working_directory_dirty():
+        msg = click.style('working directory dirty. please commit pending changes',
+                          fg='yellow')
+        raise EnvironmentError(msg)
+
     shell('autopep8 -i -r {{ cookiecutter.project_slug }}/ tests/')
+
+    if auto_commit and working_directory_dirty():
+        shell('git add -u')
+        shell("git commit -m 'autopep8 (autocommit)'", check=False)
 
 
 @main.command()
@@ -277,8 +306,8 @@ def release():
 
 def clean_build():
     """Remove build artifacts."""
-    click.confirm('This will uninstall the {{cookiecutter.project_slug}}_tasks cli. '
-                  'You may need to run `pip install -e .` or use setup.py to reinstall it. '
+    click.confirm('This will uninstall the {{cookiecutter.project_slug}} cli. '
+                  'You may need to run `pip install -e .` to reinstall it. '
                   'Continue?',
                   abort=True)
 
@@ -330,15 +359,21 @@ def clean(pyc, test, build, all):
 @main.command()
 @click.option('--capture/--no-capture', default=False, help='capture stdout')
 @click.option('--pdb', is_flag=True, help='enter debugger on test failure')
-def test(capture, pdb):
+@click.option('--mypy', 'with_mypy', is_flag=True, help='type-check source code')
+def test(capture, pdb, with_mypy):
     """
     Run tests quickly with default Python.
     """
-    flags = ' '.join([
+    pytest_flags = ' '.join([
         '-s' if not capture else '',
         '--pdb' if pdb else ''
     ])
-    shell('py.test tests/' + ' ' + flags)
+
+    shell('py.test tests/' + ' ' + pytest_flags)
+
+    if with_mypy:
+        context = click.get_current_context()
+        context.invoke(mypy)
 
 
 @main.command()
