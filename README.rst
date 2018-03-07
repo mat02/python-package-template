@@ -54,10 +54,13 @@ utility ``{{project_slug}} dev``.
 Development
 -----------
 
-You should now have a command-line tool ``{{project_slug}} dev`` which you can use to execute common tasks.
+Upon having installed the package, you should have a ``{{project_slug}}`` command-line utility.
 
-This is just a shortcut to the `run.py`_ file at the root of your project,
-meaning you have 3 ways of executing the task runner::
+This command-line utility invokes the `{{project_slug}}.{{project_slug}}.cli:main`` function.
+
+If you installed the project in development mode, you should have a ``{{project_slug}} dev`` subcommand
+which is just a shortcut to the `run.py`_ file at the root of your project,
+meaning you have 3 ways of executing development tasks::
 
     {{project_slug}} dev
 
@@ -89,7 +92,7 @@ Upon pushing your project to github, I suggest immediately running
 
 .. code-block:: bash
 
-    ./run.py publish_docs
+    ./run.py publish_docs # or {{project_slug}} dev publish_docs
 
 and navigating to ``https://{your_github_username}.github.io/{repo_name}`` to witness your documentation
 immediately rendered and available in all its glory. Cool stuff.
