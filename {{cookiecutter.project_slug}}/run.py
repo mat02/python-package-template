@@ -191,7 +191,7 @@ def deploy():
 
         print('reinstalling uninstalled packages')
 
-        context.invoke(install)
+        context.invoke(install, development=True)
 
 
 @click.argument('args', type=str, nargs=-1)
