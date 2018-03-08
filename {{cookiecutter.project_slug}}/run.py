@@ -150,52 +150,6 @@ def main():
 
 
 @main.command()
-@click.option('--host', default='127.0.0.1')
-@click.option('--port', default=8000)
-def runserver(host, port):
-    """Runs local development server using {{ cookiecutter.package_name }}'s own cli."""
-    shell(f'python -m {{cookiecutter.project_slug}}.cli runserver --host {host} --port {port}')
-
-
-@main.command()
-def deploy():
-    """Deploy to cloudfoundry."""
-    context = click.get_current_context()
-
-    try:
-        print('freezing only required deps')
-
-        context.invoke(uninstall)
-
-        shell('pipenv install')
-
-        print('dependencies frozen')
-
-        print('vendoring dependencies')
-
-        shell('rm -rf vendor')
-        shell('mkdir -p vendor')
-
-        shell('pip freeze > requirements.txt')
-        shell('pip download -r requirements.txt -d vendor --no-binary :all:')
-
-        print('deps vendored')
-
-        print('deploying to cloudfront')
-
-        shell('cf push')
-
-        print('deployed')
-
-    finally:
-
-        print('reinstalling uninstalled packages')
-
-        context.invoke(install, development=True)
-
-
-
-@main.command()
 @click.option('--auto-commit', is_flag=True, help='auto-commit if files changed')
 def autopep8(auto_commit):
     """Autopep8 modules."""
@@ -464,6 +418,51 @@ def update_vendor():
     Update required vendor libraries."""
     shell('rm -rf .vendor/')
     shell('pip install pipenv --target .vendor')
+
+
+@main.command()
+@click.option('--host', default='127.0.0.1')
+@click.option('--port', default=8000)
+def runserver(host, port):
+    """Runs local development server using {{ cookiecutter.package_name }}'s own cli."""
+    shell(f'python -m {{cookiecutter.project_slug}}.cli runserver --host {host} --port {port}')
+
+
+@main.command()
+def deploy():
+    """Deploy to cloudfoundry."""
+    context = click.get_current_context()
+
+    try:
+        print('freezing only required deps')
+
+        context.invoke(uninstall)
+
+        shell('pipenv install')
+
+        print('dependencies frozen')
+
+        print('vendoring dependencies')
+
+        shell('rm -rf vendor')
+        shell('mkdir -p vendor')
+
+        shell('pip freeze > requirements.txt')
+        shell('pip download -r requirements.txt -d vendor --no-binary :all:')
+
+        print('deps vendored')
+
+        print('deploying to cloudfront')
+
+        shell('cf push')
+
+        print('deployed')
+
+    finally:
+
+        print('reinstalling uninstalled packages')
+
+        context.invoke(install, development=True)
 
 
 if __name__ == '__main__':
