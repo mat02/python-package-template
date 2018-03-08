@@ -14,7 +14,6 @@ Features
 
 * Testing setup with ``py.test``
 * Future-proof use of Pipfile_ as opposed to requirements.txt [see pipenv_]
-* Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test
 * Sphinx_ docs: Documentation ready for generation and hosting on `GitHub Pages`_
 * Bumpversion_: Pre-configured version bumping with a single command
@@ -34,13 +33,13 @@ Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/python-package-template.git
+    cookiecutter https://github.com/knowsuchagency/python-package-template.git --checkout cloudfoundry
 
     # answer questions to generate project template
 
     cd your_new_project
 
-    # create and activate virtualenv environment
+    # generate the virtual environment and activate it
 
     pipenv shell # or whatever you use to manage your venvs
 
@@ -51,16 +50,21 @@ Generate a Python package project
 The last step will install the task runner at the root of the repo, `run.py`_ as a command-line
 utility ``{{project_slug}} dev``.
 
+    # to run the development server locally
+
+    {{project_slug}} runserver
+
+    # deploy
+
+    {{project_slug}} dev deploy
+
 Development
 -----------
 
-Upon having installed the package, you should have a ``{{project_slug}}`` command-line utility.
+You should now have a command-line tool ``{{project_slug}} dev`` which you can use to execute common tasks.
 
-This command-line utility invokes the `{{project_slug}}.{{project_slug}}.cli:main`` function.
-
-If you installed the project in development mode, you should have a ``{{project_slug}} dev`` subcommand
-which is just a shortcut to the `run.py`_ file at the root of your project,
-meaning you have 3 ways of executing development tasks::
+This is just a shortcut to the `run.py`_ file at the root of your project,
+meaning you have 3 ways of executing the task runner::
 
     {{project_slug}} dev
 
@@ -88,15 +92,6 @@ The following are some of the sub-commands you may find::
       uninstall     Uninstalls all Python dependencies.
 
 
-Upon pushing your project to github, I suggest immediately running
-
-.. code-block:: bash
-
-    ./run.py publish_docs # or {{project_slug}} dev publish_docs
-
-and navigating to ``https://{your_github_username}.github.io/{repo_name}`` to witness your documentation
-immediately rendered and available in all its glory. Cool stuff.
-
 Additional Options
 ------------------
 
@@ -104,7 +99,6 @@ Additional Options
 * Add the repo to your Travis-CI_ account.
 * Activate your project on `pyup.io`_. (if using pipenv, you can generate requirements.txt with ``pipenv lock -r``)
 
-For more details, see the `cookiecutter-pypackage tutorial`_.
 
 .. _`cookiecutter-pypackage tutorial`: https://cookiecutter-pypackage.readthedocs.io/en/latest/tutorial.html
 .. _Travis-CI: http://travis-ci.org/
