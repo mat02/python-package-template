@@ -345,6 +345,7 @@ def docs(no_browser):
     """
     Generate Sphinx HTML documentation, including API docs.
     """
+    shell('python -m {{cookiecutter.project_slug}}.cli dev update_module_docstring')
     shell('rm -f docs/{{ cookiecutter.project_slug }}.rst')
     shell('rm -f docs/modules.rst')
     shell('rm -f docs/{{ cookiecutter.project_slug }}*')
