@@ -194,16 +194,6 @@ def deploy():
         context.invoke(install, development=True)
 
 
-@click.argument('args', type=str, nargs=-1)
-def mypy(args):
-    """
-    Validate code with mypy.
-
-    Args:
-        args: these will be passed to mypy as-is
-    """
-    shell('mypy {{ cookiecutter.project_slug }} ' + ' '.join(args))
-
 
 @main.command()
 @click.option('--auto-commit', is_flag=True, help='auto-commit if files changed')
@@ -359,8 +349,8 @@ def clean(pyc, test, build, all):
 @main.command()
 @click.option('--capture/--no-capture', default=False, help='capture stdout')
 @click.option('--pdb', is_flag=True, help='enter debugger on test failure')
-@click.option('--mypy', 'with_mypy', is_flag=True, help='type-check source code')
-def test(capture, pdb, with_mypy):
+@click.option('--mypy', is_flag=True, help='type-check source code')
+def test(capture, pdb, mypy):
     """
     Run tests quickly with default Python.
     """
@@ -371,9 +361,8 @@ def test(capture, pdb, with_mypy):
 
     shell('py.test tests/' + ' ' + pytest_flags)
 
-    if with_mypy:
-        context = click.get_current_context()
-        context.invoke(mypy)
+    if mypy:
+        shell('mypy {{cookiecutter.project_slug}} tests/')
 
 
 @main.command()

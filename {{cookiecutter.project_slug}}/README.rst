@@ -42,5 +42,5 @@ Usage
 
 ::
 
-    {{cookiecutter.project_slug}} runserver
-    {{cookiecutter.project_slug}} deploy
+    {{cookiecutter.project_slug}} runserver # run server locally
+    {{cookiecutter.project_slug}} dev deploy # deploy to cloudfoundry
