@@ -97,3 +97,6 @@ python_boilerplate/
 
 # top-level run
 run.py
+
+# cloudfoundry cookiecutter
+cf_boilerplate/

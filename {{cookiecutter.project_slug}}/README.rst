@@ -30,6 +30,7 @@
 Installation
 ------------
 
+::
 
     git clone {this repo}
     cd project_directory
@@ -40,7 +41,11 @@ Installation
 Usage
 ---------
 
-::
+Use Pipenv to install new modules so they're tracked correctly in the Pipfile::
 
-    {{cookiecutter.project_slug}} runserver # run server locally
-    {{cookiecutter.project_slug}} dev deploy # deploy to cloudfoundry
+    pipenv install new-package
+
+To run the app locally and/or deploy to cloudfoundry::
+
+    {{cookiecutter.project_slug}} runserver
+    {{cookiecutter.project_slug}} dev deploy
