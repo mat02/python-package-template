@@ -50,13 +50,13 @@ Generate a Python package project
 The last step will install the task runner at the root of the repo, `run.py`_ as a command-line
 utility ``{{project_slug}} dev``.
 
-    # to run the development server
+    # to run the development server locally
 
     {{project_slug}} runserver
 
     # deploy
 
-    {{project_slug}} deploy
+    {{project_slug}} dev deploy
 
 Development
 -----------
