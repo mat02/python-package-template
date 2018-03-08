@@ -284,7 +284,7 @@ def clean_test():
 @click.option('--pyc', is_flag=True, help=clean_pyc.__doc__)
 @click.option('--test', is_flag=True, help=clean_test.__doc__)
 @click.option('--build', is_flag=True, help=clean_build.__doc__)
-@click.option('--all', is_flag=True, help='Clean all files.')
+@click.option('--all', is_flag=True, help='Clean all files. This is the default')
 def clean(pyc, test, build, all):
     """Remove all build, test, coverage and Python artifacts."""
     fn_flag = (
@@ -293,7 +293,7 @@ def clean(pyc, test, build, all):
         (clean_build, build)
     )
 
-    if all:
+    if all or not any((pyc, test, build)):
         clean_pyc()
         clean_test()
         clean_build()
