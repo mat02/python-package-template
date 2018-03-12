@@ -19,6 +19,8 @@ def shell(command: str, check=True, capture=False) -> sp.CompletedProcess:
     """
     Run the command in a shell.
 
+    !!! Make sure you trust the input to this command !!!
+
     Args:
         command: the command to be run
         check: raise exception if return code not zero
