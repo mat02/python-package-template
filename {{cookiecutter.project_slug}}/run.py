@@ -294,9 +294,8 @@ def publish_docs():
 
 
 @main.command()
-def update_vendor():
-    """
-    Update required vendored libraries required for package installation."""
+def update_setup_requires():
+    """Update required vendored libraries required for package installation."""
     shell('rm -rf setup_requires/')
     shell('pip install pipenv --target setup_requires')
 
