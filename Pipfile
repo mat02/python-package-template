@@ -8,8 +8,7 @@ name = "pypi"
 [packages]
 
 click = "*"
+shell-utils = "*"
 
 
 [dev-packages]
-
-shell-utils = "*"
