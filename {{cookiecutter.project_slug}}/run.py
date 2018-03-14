@@ -297,7 +297,7 @@ def publish_docs():
 @main.command()
 def update_vendor():
     """
-    Update required vendor libraries."""
+    Update vendored libraries necessary for package installation."""
     shell('rm -rf .vendor/')
     shell('pip install pipenv --target .vendor')
 
@@ -311,20 +311,20 @@ def runserver(host, port):
 
 
 @main.command()
-def deploy():
-    """Deploy to cloudfoundry."""
+def vendor():
+    """Vendor dependencies for cloudfoundry."""
     context = click.get_current_context()
 
     try:
-        print('freezing only required deps')
+        click.secho('freezing only required dependencies', fg='yellow')
 
         context.invoke(uninstall)
 
         shell('pipenv install')
 
-        print('dependencies frozen')
+        click.secho('dependencies frozen', fg='green')
 
-        print('vendoring dependencies')
+        click.secho('vendoring dependencies', fg='yellow')
 
         shell('rm -rf vendor')
         shell('mkdir -p vendor')
@@ -332,19 +332,29 @@ def deploy():
         shell('pip freeze > requirements.txt')
         shell('pip download -r requirements.txt -d vendor --no-binary :all:')
 
-        print('deps vendored')
-
-        print('deploying to cloudfront')
-
-        shell('cf push')
-
-        print('deployed')
+        click.secho('dependencies vendored', fg='green')
 
     finally:
 
-        print('reinstalling uninstalled packages')
+        click.secho('reinstalling uninstalled packages', fg='yellow')
 
         context.invoke(install, development=True)
+
+        click.secho('packages reinstalled', fg='green')
+
+
+@main.command()
+def deploy():
+    """Deploy to cloudfoundry."""
+    context = click.get_current_context()
+
+    context.invoke(vendor)
+
+    click.secho('deploying to cloudfront', fg='yellow')
+
+    shell('cf push')
+
+    click.secho('deployed', fg='green')
 
 
 if __name__ == '__main__':
