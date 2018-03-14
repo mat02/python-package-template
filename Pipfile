@@ -12,3 +12,4 @@ click = "*"
 
 [dev-packages]
 
+shell-utils = "*"

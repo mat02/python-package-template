@@ -5,6 +5,7 @@ verify_ssl = true
 [packages]
 attrs = "*"
 click = "*"
+shell-utils = "*"
 
 [dev-packages]
 "autopep8" = "*"
