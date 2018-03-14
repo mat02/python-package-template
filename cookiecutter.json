@@ -9,5 +9,5 @@
   "version": "0.1.0",
   "open_source": "n",
 
-  "_copy_without_render": ["*vendor"]
+  "_copy_without_render": ["*setup_requires"]
 }
