@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import with_statement
+
 import logging
 import optparse
 import os
@@ -108,7 +109,7 @@ def fix_symlink_if_necessary(src_dir, dst_dir):
                 target = os.path.realpath(full_file_path)
                 if target.startswith(src_dir):
                     new_target = target.replace(src_dir, dst_dir)
-                    logger.debug('fixing symlink in {}'.format(full_file_path))
+                    logger.debug('fixing symlink in %s' % (full_file_path,))
                     os.remove(full_file_path)
                     os.symlink(new_target, full_file_path)
 
@@ -116,7 +117,7 @@ def fix_symlink_if_necessary(src_dir, dst_dir):
 def fixup_scripts(old_dir, new_dir, version, rewrite_env_python=False):
     bin_dir = os.path.join(new_dir, env_bin_dir)
     root, dirs, files = next(os.walk(bin_dir))
-    pybinre = re.compile('pythonw?([0-9]+(\.[0-9]+(\.[0-9]+)?)?)?$')
+    pybinre = re.compile(r'pythonw?([0-9]+(\.[0-9]+(\.[0-9]+)?)?)?$')
     for file_ in files:
         filename = os.path.join(root, file_)
         if file_ in ['python', 'python%s' % version, 'activate_this.py']:
@@ -170,6 +171,11 @@ def fixup_script_(root, file_, old_dir, new_dir, version,
         # binary file
         return
 
+    # This takes care of the scheme in which shebang is of type
+    # '#!/venv/bin/python3' while the version of system python
+    # is of type 3.x e.g. 3.5.
+    short_version = bang[len(old_shebang):]
+
     if not bang.startswith('#!'):
         return
     elif bang == old_shebang:
@@ -177,6 +183,10 @@ def fixup_script_(root, file_, old_dir, new_dir, version,
     elif (bang.startswith(old_shebang)
           and bang[len(old_shebang):] == version):
         rewrite_shebang(version)
+    elif (bang.startswith(old_shebang)
+          and short_version
+          and bang[len(old_shebang):] == short_version):
+        rewrite_shebang(short_version)
     elif rewrite_env_python and bang.startswith(env_shebang):
         if bang == env_shebang:
             rewrite_shebang()
@@ -250,20 +260,26 @@ def fixup_syspath_items(syspath, old_dir, new_dir):
 
 
 def fixup_pth_file(filename, old_dir, new_dir):
-    logger.debug('fixing %s' % filename)
-    with open(filename, 'rb') as f:
+    logger.debug('fixup_pth_file %s' % filename)
+
+    with open(filename, 'r') as f:
         lines = f.readlines()
+
     has_change = False
+
     for num, line in enumerate(lines):
-        line = line.decode('utf-8').strip()
+        line = (line.decode('utf-8') if hasattr(line, 'decode') else line).strip()
+
         if not line or line.startswith('#') or line.startswith('import '):
             continue
         elif _dirmatch(line, old_dir):
             lines[num] = line.replace(old_dir, new_dir, 1)
             has_change = True
+
     if has_change:
-        with open(filename, 'wb') as f:
-            f.writelines(lines)
+        with open(filename, 'w') as f:
+            payload = os.linesep.join([l.strip() for l in lines]) + os.linesep
+            f.write(payload)
 
 
 def fixup_egglink_file(filename, old_dir, new_dir):
@@ -289,10 +305,10 @@ def main():
     try:
         old_dir, new_dir = args
     except ValueError:
-        print("virtualenv-clone {}".format(__version__))
+        print("virtualenv-clone %s" % (__version__,))
         parser.error("not enough arguments given.")
-    old_dir = os.path.normpath(os.path.abspath(old_dir))
-    new_dir = os.path.normpath(os.path.abspath(new_dir))
+    old_dir = os.path.realpath(old_dir)
+    new_dir = os.path.realpath(new_dir)
     loglevel = (logging.WARNING, logging.INFO, logging.DEBUG)[min(2,
             options.verbose)]
     logging.basicConfig(level=loglevel, format='%(message)s')

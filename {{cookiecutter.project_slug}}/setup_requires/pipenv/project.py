@@ -3,6 +3,7 @@ import json
 import os
 import re
 import sys
+import shlex
 import base64
 import hashlib
 
@@ -11,25 +12,34 @@ import delegator
 import pipfile
 import toml
 
+from pip9 import ConfigOptionParser
 from .utils import (
     mkdir_p, convert_deps_from_pip, pep423_name, recase_file,
     find_requirements, is_file, is_vcs, python_version, cleanup_toml,
-    is_installable_file, is_valid_url
+    is_installable_file, is_valid_url, normalize_drive, python_version,
+    escape_grouped_arguments
 )
-from .environments import PIPENV_MAX_DEPTH, PIPENV_VENV_IN_PROJECT
-from .environments import PIPENV_VIRTUALENV, PIPENV_PIPFILE
+from .environments import (
+    PIPENV_MAX_DEPTH,
+    PIPENV_PIPFILE,
+    PIPENV_VENV_IN_PROJECT,
+    PIPENV_VIRTUALENV,
+    PIPENV_NO_INHERIT,
+    PIPENV_TEST_INDEX,
+    PIPENV_PYTHON
+)
 
 if PIPENV_PIPFILE:
     if not os.path.isfile(PIPENV_PIPFILE):
         raise RuntimeError('Given PIPENV_PIPFILE is not found!')
     else:
-        PIPENV_PIPFILE = os.path.abspath(PIPENV_PIPFILE)
+        PIPENV_PIPFILE = normalize_drive(os.path.abspath(PIPENV_PIPFILE))
 
 
 class Project(object):
     """docstring for Project"""
 
-    def __init__(self, chdir=True):
+    def __init__(self, which=None, python_version=None, chdir=True):
         super(Project, self).__init__()
         self._name = None
         self._virtualenv_location = None
@@ -38,6 +48,8 @@ class Project(object):
         self._pipfile_location = None
         self._requirements_location = None
         self._original_dir = os.path.abspath(os.curdir)
+        self.which = which
+        self.python_version = python_version
 
         # Hack to skip this during pipenv run, or -r.
         if ('run' not in sys.argv) and chdir:
@@ -152,7 +164,11 @@ class Project(object):
 
         # If the pipfile was located at '/home/user/MY_PROJECT/Pipfile',
         # the name of its virtualenv will be 'my-project-wyUfYPqE'
-        return sanitized + '-' + encoded_hash
+
+        if PIPENV_PYTHON:
+            return sanitized + '-' + encoded_hash + '-' + PIPENV_PYTHON
+        else:
+            return sanitized + '-' + encoded_hash
 
     @property
     def virtualenv_location(self):
@@ -167,7 +183,7 @@ class Project(object):
 
         # The user wants the virtualenv in the project.
         if not PIPENV_VENV_IN_PROJECT:
-            c = delegator.run('pew dir "{0}"'.format(self.virtualenv_name))
+            c = delegator.run('{0} -m pipenv.pew dir "{1}"'.format(escape_grouped_arguments(sys.executable), self.virtualenv_name))
             loc = c.out.strip()
         # Default mode.
         else:
@@ -224,7 +240,7 @@ class Project(object):
                 loc = pipfile.Pipfile.find(max_depth=PIPENV_MAX_DEPTH)
             except RuntimeError:
                 loc = None
-            self._pipfile_location = loc
+            self._pipfile_location = normalize_drive(loc)
 
         return self._pipfile_location
 
@@ -291,6 +307,15 @@ class Project(object):
     def settings(self):
         """A dictionary of the settings added to the Pipfile."""
         return self.parsed_pipfile.get('pipenv', {})
+
+    @property
+    def scripts(self):
+        scripts = self.parsed_pipfile.get('scripts', {})
+        for (k, v) in scripts.items():
+            scripts[k] = shlex.split(v, posix=True)
+
+        return scripts
+
 
     def update_settings(self, d):
         settings = self.settings
@@ -389,11 +414,27 @@ class Project(object):
 
     def create_pipfile(self, python=None):
         """Creates the Pipfile, filled with juicy defaults."""
-        data = {
+        config_parser = ConfigOptionParser(name=self.name)
+        install = dict(config_parser.get_config_section('install'))
+        indexes = install.get('extra-index-url', '').lstrip('\n').split('\n')
+
+        if PIPENV_TEST_INDEX:
+            sources = [{u'url': PIPENV_TEST_INDEX, u'verify_ssl': True, u'name': u'custom'}]
+        else:
             # Default source.
-            u'source': [
-                {u'url': u'https://pypi.python.org/simple', u'verify_ssl': True, 'name': 'pypi'}
-            ],
+            pypi_source = {u'url': u'https://pypi.python.org/simple', u'verify_ssl': True, u'name': 'pypi'}
+            sources = [pypi_source]
+
+            for i, index in enumerate(indexes):
+                if not index:
+                    continue
+                source_name = 'pip_index_{}'.format(i)
+                verify_ssl = index.startswith('https')
+
+                sources.append({u'url': index, u'verify_ssl': verify_ssl, u'name': source_name})
+
+        data = {
+            u'source': sources,
 
             # Default packages.
             u'packages': {},
@@ -402,8 +443,8 @@ class Project(object):
         }
 
         # Default requires.
-        if python:
-            data[u'requires'] = {'python_version': python_version(python)[:len('2.7')]}
+        required_python = python or self.which('python', self.virtualenv_location)
+        data[u'requires'] = {'python_version': python_version(required_python)[:len('2.7')]}
 
         self.write_toml(data, 'Pipfile')
 
