@@ -94,15 +94,12 @@ def uninstall():
 
 @main.command()
 @click.option('--development/--no-development', default=True, help='install development requirements.')
-@click.option('--idempotent/--no-idempotent', default=True, help='uninstall current packages before installing.')
+@click.option('--idempotent', is_flag=True, help='uninstall current packages before installing.')
 def install(development, idempotent):
     """
     Install Python dependencies.
     """
-    click.confirm("Only use this if you're using pipenv "
-                  "as your virtualenv and dependency management tool. "
-                  "Continue?",
-                  abort=True)
+    click.secho("make sure you're using pipenv for dependency management", fg='yellow')
 
     context = click.get_current_context()
     if idempotent:
