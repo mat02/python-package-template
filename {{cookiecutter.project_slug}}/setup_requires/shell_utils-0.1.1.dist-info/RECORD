@@ -10,7 +10,7 @@ shell_utils-0.1.1.dist-info/metadata.json,sha256=5xHs90BOL9ODDX1C4vUL2eyP9SUZBLz
 shell_utils-0.1.1.dist-info/top_level.txt,sha256=3fsSHRoP06i43kgiG4JctjWA63V_W7xUKvu3tfWoxwo,18
 tests/__init__.py,sha256=v4XmN72nNY5tZTEZ6D9vr92TSDhPYbhVSrUB6gIj2bg,66
 tests/test_shell_utils.py,sha256=8RR32drE33bMPjiMvYadu495uHlCBmggLxiBbplkJ0I,1530
-../../bin/shell_utils,sha256=aF6ABbkGfI9KLYs7d98nM3UqJrCcu2KEpGVHraQ9bDI,281
+../../bin/shell_utils,sha256=vuYxRFGVWZBNz_Nw0Iv4Ao1k47yvnVQ4DBivQ-v7-qw,255
 shell_utils-0.1.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
 tests/__pycache__/test_shell_utils.cpython-36.pyc,,
 tests/__pycache__/__init__.cpython-36.pyc,,
