@@ -10,8 +10,14 @@ os.environ.pop('__PYVENV_LAUNCHER__', None)
 # Shell compatibility mode, for mis-configured shells.
 PIPENV_SHELL_FANCY = bool(os.environ.get('PIPENV_SHELL_FANCY'))
 
+# Support for both Python 2 and Python 3 at the same time.
+PIPENV_PYTHON = os.environ.get('PIPENV_PYTHON')
+
 # Create the virtualenv in the project, instead of with pew.
-PIPENV_VENV_IN_PROJECT = bool(os.environ.get('PIPENV_VENV_IN_PROJECT'))
+PIPENV_VENV_IN_PROJECT = bool(os.environ.get('PIPENV_VENV_IN_PROJECT')) or os.path.isdir('.venv')
+
+# Overwrite all index funcitonality.
+PIPENV_TEST_INDEX = os.environ.get('PIPENV_TEST_INDEX')
 
 # No color mode, for unfun people.
 PIPENV_COLORBLIND = bool(os.environ.get('PIPENV_COLORBLIND'))
@@ -40,6 +46,12 @@ PIPENV_MAX_SUBPROCESS = int(os.environ.get('PIPENV_MAX_SUBPROCESS', '16'))
 # User-configurable max-depth for Pipfile searching.
 # Note: +1 because of a temporary bug in Pipenv.
 PIPENV_MAX_DEPTH = int(os.environ.get('PIPENV_MAX_DEPTH', '3')) + 1
+
+# Tell Pipenv not to inherit parent directories (for development, mostly).
+PIPENV_NO_INHERIT = 'PIPENV_NO_INHERIT' in os.environ
+
+if PIPENV_NO_INHERIT:
+    PIPENV_MAX_DEPTH = 2
 
 # Tells Pipenv to use the virtualenv-provided pip instead.
 PIPENV_VIRTUALENV = None

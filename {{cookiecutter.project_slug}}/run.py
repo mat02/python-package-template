@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 """Task runner for the {{ cookiecutter.package_name }} project."""
 from tempfile import NamedTemporaryFile
+from importlib.util import find_spec
 from textwrap import dedent
 from pathlib import Path
 import subprocess as sp
 import os
 import re
+
+required_installed = find_spec('shell_utils') and find_spec('click')
+
+if not required_installed:
+    import sys
+
+    sys.path.append('setup_requires')
 
 from shell_utils import shell, cd
 

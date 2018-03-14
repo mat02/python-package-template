@@ -6,9 +6,8 @@ import copy
 from functools import partial
 from itertools import chain, count
 import os
-
 from first import first
-from pip.req import InstallRequirement
+from notpip.req import InstallRequirement
 
 from . import click
 from .cache import DependencyCache
@@ -28,6 +27,7 @@ class RequirementSummary(object):
     def __init__(self, ireq):
         self.req = ireq.req
         self.key = key_from_req(ireq.req)
+        self.markers = ireq.markers
         self.extras = str(sorted(ireq.extras))
         self.specifier = str(ireq.specifier)
 
@@ -149,6 +149,7 @@ class Resolver(object):
                 continue
 
             ireqs = iter(ireqs)
+
             # deepcopy the accumulator so as to not modify the self.our_constraints invariant
             combined_ireq = copy.deepcopy(next(ireqs))
             combined_ireq.comes_from = None
@@ -156,7 +157,7 @@ class Resolver(object):
                 # NOTE we may be losing some info on dropped reqs here
                 combined_ireq.req.specifier &= ireq.req.specifier
                 combined_ireq.constraint &= ireq.constraint
-                # combined_ireq.markers = ireq.markers
+                combined_ireq.markers = ireq.markers
                 # Return a sorted, de-duped tuple of extras
                 combined_ireq.extras = tuple(sorted(set(tuple(combined_ireq.extras) + tuple(ireq.extras))))
             yield combined_ireq
@@ -194,7 +195,6 @@ class Resolver(object):
         # Find the new set of secondary dependencies
         log.debug('')
         log.debug('Finding secondary dependencies:')
-
         safe_constraints = []
         for best_match in best_matches:
             for dep in self._iter_dependencies(best_match):
@@ -270,6 +270,7 @@ class Resolver(object):
         Editable requirements will never be looked up, as they may have
         changed at any time.
         """
+
         if ireq.editable:
             for dependency in self.repository.get_dependencies(ireq):
                 yield dependency
@@ -294,14 +295,43 @@ class Resolver(object):
         if ireq not in self.dependency_cache:
             log.debug('  {} not in cache, need to check index'.format(format_requirement(ireq)), fg='yellow')
             dependencies = self.repository.get_dependencies(ireq)
-            self.dependency_cache[ireq] = sorted(str(ireq.req) for ireq in dependencies)
+            import sys
+            if sys.version_info[0] == 2:
+                self.dependency_cache[ireq] = sorted(str(ireq.req) for ireq in dependencies)
+            else:
+                self.dependency_cache[ireq] = sorted('{0}; {1}'.format(str(ireq.req), str(ireq.markers)) if ireq.markers else str(ireq.req) for ireq in dependencies)
 
         # Example: ['Werkzeug>=0.9', 'Jinja2>=2.4']
         dependency_strings = self.dependency_cache[ireq]
         log.debug('  {:25} requires {}'.format(format_requirement(ireq),
                                                ', '.join(sorted(dependency_strings, key=lambda s: s.lower())) or '-'))
+        from notpip._vendor.packaging.markers import InvalidMarker
+
         for dependency_string in dependency_strings:
-            yield InstallRequirement.from_line(dependency_string, constraint=ireq.constraint)
+
+            try:
+                individual_dependencies = [dep.strip() for dep in dependency_string.split(', ')]
+                cleaned_deps = []
+                for dep in individual_dependencies:
+                    tokens = [token.strip() for token in dep.split(';')]
+                    cleaned_tokens = []
+                    markers = []
+                    if len(tokens) == 1:
+                        cleaned_deps.append(tokens[0])
+                        continue
+                    markers = list(set(tokens[1:]))
+                    cleaned_tokens.append(tokens[0])
+                    if markers:
+                        cleaned_tokens.extend(markers)
+                    cleaned_deps.append('; '.join(cleaned_tokens))
+                _dependency_string = ', '.join(set(cleaned_deps))
+
+                yield InstallRequirement.from_line(_dependency_string, constraint=ireq.constraint)
+            except InvalidMarker:
+                yield InstallRequirement.from_line(dependency_string, constraint=ireq.constraint)
+
+
+
 
     def reverse_dependencies(self, ireqs):
         non_editable = [ireq for ireq in ireqs if not ireq.editable]

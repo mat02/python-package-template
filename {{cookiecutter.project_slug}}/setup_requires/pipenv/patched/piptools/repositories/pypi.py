@@ -7,12 +7,15 @@ import os
 from contextlib import contextmanager
 from shutil import rmtree
 
-from pip.download import is_file_url, url_to_path
-from pip.index import PackageFinder
-from pip.req.req_set import RequirementSet
-from pip.wheel import Wheel
+from notpip.download import is_file_url, url_to_path
+from notpip.index import PackageFinder
+from notpip.req.req_set import RequirementSet
+from notpip.wheel import Wheel
+from notpip.req.req_install import InstallRequirement
+from pip9._vendor.packaging.requirements import InvalidRequirement
+from pip9._vendor.pyparsing import ParseException
 try:
-    from pip.utils.hashes import FAVORITE_HASH
+    from notpip.utils.hashes import FAVORITE_HASH
 except ImportError:
     FAVORITE_HASH = 'sha256'
 
@@ -37,8 +40,9 @@ class PyPIRepository(BaseRepository):
     config), but any other PyPI mirror can be used if index_urls is
     changed/configured on the Finder.
     """
-    def __init__(self, pip_options, session):
+    def __init__(self, pip_options, session, use_json=True):
         self.session = session
+        self.use_json = use_json
 
         index_urls = [pip_options.index_url] + pip_options.extra_index_urls
         if pip_options.no_index:
@@ -63,6 +67,7 @@ class PyPIRepository(BaseRepository):
         # of all secondary dependencies for the given requirement, so we
         # only have to go to disk once for each requirement
         self._dependencies_cache = {}
+        self._json_dep_cache = {}
 
         # Setup file paths
         self.freshen_build_caches()
@@ -104,6 +109,7 @@ class PyPIRepository(BaseRepository):
         Returns a Version object that indicates the best match for the given
         InstallRequirement according to the external repository.
         """
+
         if ireq.editable:
             return ireq  # return itself as the best match
 
@@ -119,18 +125,77 @@ class PyPIRepository(BaseRepository):
         best_candidate = max(matching_candidates, key=self.finder._candidate_sort_key)
 
         # Turn the candidate into a pinned InstallRequirement
-        return make_install_requirement(
+        new_req = make_install_requirement(
             best_candidate.project, best_candidate.version, ireq.extras, ireq.markers, constraint=ireq.constraint
         )
 
+        # KR TODO: Marker here?
+
+        return new_req
+
+    def get_json_dependencies(self, ireq):
+
+        if not (is_pinned_requirement(ireq)):
+            raise TypeError('Expected pinned InstallRequirement, got {}'.format(ireq))
+
+        def gen(ireq):
+            if self.DEFAULT_INDEX_URL in self.finder.index_urls:
+
+                url = 'https://pypi.org/pypi/{0}/json'.format(ireq.req.name)
+                r = self.session.get(url)
+
+                latest = list(r.json()['releases'].keys())[-1]
+                if str(ireq.req.specifier) == '=={0}'.format(latest):
+
+                    for requires in r.json().get('info', {}).get('requires_dist', {}):
+                        i = InstallRequirement.from_line(requires)
+
+                        if 'extra' not in repr(i.markers):
+                            yield i
+
+        try:
+            if ireq not in self._json_dep_cache:
+                self._json_dep_cache[ireq] = [g for g in gen(ireq)]
+
+            return set(self._json_dep_cache[ireq])
+        except Exception:
+            return set()
+
     def get_dependencies(self, ireq):
+        json_results = set()
+
+        if self.use_json:
+            try:
+                json_results = self.get_json_dependencies(ireq)
+            except TypeError:
+                json_results = set()
+
+        legacy_results = self.get_legacy_dependencies(ireq)
+        json_results.update(legacy_results)
+
+        return json_results
+
+    def get_legacy_dependencies(self, ireq):
         """
         Given a pinned or an editable InstallRequirement, returns a set of
         dependencies (also InstallRequirements, but not necessarily pinned).
         They indicate the secondary dependencies for the given requirement.
         """
+
         if not (ireq.editable or is_pinned_requirement(ireq)):
             raise TypeError('Expected pinned or editable InstallRequirement, got {}'.format(ireq))
+
+        # Collect setup_requires info from local eggs.
+        setup_requires = {}
+        if ireq.editable:
+            try:
+                dist = ireq.get_dist()
+                if dist.has_metadata('requires.txt'):
+                    setup_requires = self.finder.get_extras_links(
+                        dist.get_metadata_lines('requires.txt')
+                    )
+            except TypeError:
+                pass
 
         if ireq not in self._dependencies_cache:
             if ireq.link and not ireq.link.is_artifact:
@@ -149,8 +214,40 @@ class PyPIRepository(BaseRepository):
                                     download_dir=download_dir,
                                     wheel_download_dir=self._wheel_download_dir,
                                     session=self.session,
-                                    ignore_installed=True)
-            result = reqset._prepare_file(self.finder, ireq)
+                                    ignore_installed=True,
+                                    ignore_compatibility=False
+                                    )
+            result = reqset._prepare_file(self.finder, ireq, ignore_requires_python=True)
+
+            # Convert setup_requires dict into a somewhat usable form.
+            if setup_requires:
+                for section in setup_requires:
+                    python_version = section
+                    not_python = not (section.startswith('[') and ':' in section)
+
+                    for value in setup_requires[section]:
+                        # This is a marker.
+                        if value.startswith('[') and ':' in value:
+                            python_version = value[1:-1]
+                            not_python = False
+                        # Strip out other extras.
+                        if value.startswith('[') and ':' not in value:
+                            not_python = True
+
+                        if ':' not in value:
+                            try:
+                                if not not_python:
+                                    result = result + [InstallRequirement.from_line("{0}{1}".format(value, python_version).replace(':', ';'))]
+                            # Anything could go wrong here — can't be too careful.
+                            except Exception:
+                                pass
+
+            if reqset.requires_python:
+
+                marker = 'python_version=="{0}"'.format(reqset.requires_python.replace(' ', ''))
+                new_req = InstallRequirement.from_line('{0}; {1}'.format(str(ireq.req), marker))
+                result = [new_req]
+
             self._dependencies_cache[ireq] = result
         return set(self._dependencies_cache[ireq])
 
@@ -172,7 +269,6 @@ class PyPIRepository(BaseRepository):
         matching_versions = list(
             ireq.specifier.filter((candidate.version for candidate in all_candidates)))
         matching_candidates = candidates_by_version[matching_versions[0]]
-
         return {
             self._get_file_hash(candidate.location)
             for candidate in matching_candidates
@@ -188,7 +284,7 @@ class PyPIRepository(BaseRepository):
     @contextmanager
     def allow_all_wheels(self):
         """
-        Monkey patches pip.Wheel to allow wheels from all platforms and Python versions.
+        Monkey patches pip9.Wheel to allow wheels from all platforms and Python versions.
 
         This also saves the candidate cache and set a new one, or else the results from the
         previous non-patched calls will interfere.
@@ -222,7 +318,7 @@ def open_local_or_remote_file(link, session):
     """
     Open local or remote file for reading.
 
-    :type link: pip.index.Link
+    :type link: pip9.index.Link
     :type session: requests.Session
     :raises ValueError: If link points to a local directory.
     :return: a context manager to the opened file-like object
