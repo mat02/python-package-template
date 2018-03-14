@@ -265,7 +265,7 @@ def publish_docs():
             git push gh-pages
             git checkout master
             """).strip())
-        print('created github pages branch')
+        click.secho('created github pages branch', fg='green')
 
     # deleting old publication
     shell('rm -rf public')
