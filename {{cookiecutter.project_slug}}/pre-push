@@ -7,5 +7,4 @@ and your project is installed
 echo "$msg"
 
 {{cookiecutter.project_slug}} dev autopep8 --auto-commit
-{{cookiecutter.project_slug}} dev test
-mypy {{ cookiecutter.project_slug }}/ tests/ --ignore-missing-imports
+{{cookiecutter.project_slug}} dev test --mypy

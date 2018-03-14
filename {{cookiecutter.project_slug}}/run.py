@@ -318,7 +318,7 @@ def test(capture, pdb, mypy):
     shell('py.test tests/' + ' ' + pytest_flags)
 
     if mypy:
-        shell('mypy {{cookiecutter.project_slug}} tests/')
+        shell('mypy {{ cookiecutter.project_slug }} tests/ --ignore-missing-imports')
 
 
 @main.command()
