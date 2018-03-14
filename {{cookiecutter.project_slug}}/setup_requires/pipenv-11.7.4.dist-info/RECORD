@@ -819,9 +819,9 @@ pipenv-11.7.4.dist-info/WHEEL,sha256=0mO7-aKM6K9CHeURc5NDYZyLWH5lmR-r4TtPinHxz7Y
 pipenv-11.7.4.dist-info/entry_points.txt,sha256=NDrLxpdWj_Tz7iab0OQViZpe_U-dx5YufHidu2SCRio,114
 pipenv-11.7.4.dist-info/metadata.json,sha256=eA3OJ4L4A82P2ChHsM2qs790JbOjV-Kb8XxGdfkR_wQ,1520
 pipenv-11.7.4.dist-info/top_level.txt,sha256=U2mu5YX2F0WINWNw3UyWlki6obCg31YRjlgxs-iSpYY,7
-../../bin/pewtwo,sha256=9-W9srQeKZKYoiYhAlpyuc0uQybjlE9xOFarGhfV0SM,286
-../../bin/pipenv,sha256=EGjYrV9Ui_PM1_Ci3BYoNtepJrDwtw1Diyto6gq6Gio,270
-../../bin/pipenv-resolver,sha256=HU6nbXE1PUMPg823PQGATsEXX2Ej8ywvOJMKguqv1Go,281
+../../bin/pewtwo,sha256=0a1WxoOn4JtdIk2teLCFZb1ZCvP4WUdPR5g62NWpUCM,260
+../../bin/pipenv,sha256=9-Ve-40XF-HgIHHvLihCzED9BKwBjpdMbNvDZlUonpM,244
+../../bin/pipenv-resolver,sha256=DbBmQgpjBZUm7kgO_MFyMF9R6fSxASjRXDbe8u3a2h0,255
 pipenv-11.7.4.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
 pipenv/pew/__pycache__/__main__.cpython-36.pyc,,
 pipenv/pew/__pycache__/__init__.cpython-36.pyc,,
