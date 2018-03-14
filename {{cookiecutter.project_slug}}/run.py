@@ -342,7 +342,7 @@ def vendor():
 
         click.secho('reinstalling uninstalled packages', fg='yellow')
 
-        context.invoke(install, development=True)
+        context.invoke(install, development=True, idempotent=True)
 
         click.secho('packages reinstalled', fg='green')
 
