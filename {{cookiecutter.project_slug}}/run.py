@@ -296,9 +296,9 @@ def publish_docs():
 @main.command()
 def update_vendor():
     """
-    Update required vendor libraries."""
-    shell('rm -rf .vendor/')
-    shell('pip install pipenv --target .vendor')
+    Update required vendored libraries required for package installation."""
+    shell('rm -rf setup_requires/')
+    shell('pip install pipenv --target setup_requires')
 
 
 if __name__ == '__main__':
