@@ -12,6 +12,7 @@ import os
 
 from {{ cookiecutter.project_slug }}.{{ cookiecutter.project_slug }} import app
 
+from aiohttp import web
 import click
 
 
@@ -25,7 +26,8 @@ def cli():
 @click.option('--host', default='127.0.0.1')
 @click.option('--port', default=8000)
 def runserver(host, port):
-    app.run(host=host, port=port)
+    """Run the server locally for development."""
+    web.run_app(app, host=host, port=port)
 
 
 def add_dev_command(root_cmd):
