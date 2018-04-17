@@ -100,3 +100,7 @@ run.py
 
 # cloudfoundry cookiecutter
 cf_boilerplate/
+
+# pipenv
+Pipfile
+Pipfile.lock
