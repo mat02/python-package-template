@@ -1,2 +1,2 @@
 [build-system]
-requires = ["setuptools", "wheel", "pipenv", "shell-utils"]
+requires = ["setuptools", "wheel", "pipenv"]

@@ -1,19 +1,11 @@
 #!/usr/bin/env python
 """Task runner for the {{ cookiecutter.package_name }} project."""
 from tempfile import NamedTemporaryFile
-from importlib.util import find_spec
 from textwrap import dedent
 from pathlib import Path
 import subprocess as sp
 import os
 import re
-
-# required_installed = find_spec('shell_utils') and find_spec('click')
-#
-# if not required_installed:
-#     import sys
-#
-#     sys.path.append('setup_requires')
 
 from shell_utils import shell, cd
 
@@ -93,9 +85,8 @@ def uninstall():
 
 
 @main.command()
-@click.option('--development/--no-development', default=True, help='install development requirements.')
 @click.option('--idempotent', is_flag=True, help='uninstall current packages before installing.')
-def install(development, idempotent):
+def install(idempotent):
     """
     Install Python dependencies.
     """
@@ -105,9 +96,6 @@ def install(development, idempotent):
     if idempotent:
         context.invoke(uninstall)
 
-    development_flag = '-d' if development else ''
-
-    shell(f'pipenv install {development_flag}')
     shell('pip install -e .[dev]')
 
 
