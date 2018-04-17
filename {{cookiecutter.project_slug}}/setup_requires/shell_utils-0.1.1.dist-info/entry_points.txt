@@ -1,3 +1,0 @@
-[console_scripts]
-shell_utils = shell_utils.cli:main
-

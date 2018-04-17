@@ -8,12 +8,12 @@ import subprocess as sp
 import os
 import re
 
-required_installed = find_spec('shell_utils') and find_spec('click')
-
-if not required_installed:
-    import sys
-
-    sys.path.append('setup_requires')
+# required_installed = find_spec('shell_utils') and find_spec('click')
+#
+# if not required_installed:
+#     import sys
+#
+#     sys.path.append('setup_requires')
 
 from shell_utils import shell, cd
 
