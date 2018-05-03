@@ -8,7 +8,6 @@ click = "*"
 shell-utils = "*"
 
 [dev-packages]
-black = "*"
 bumpversion = "*"
 coverage = "*"
 cryptography = "*"
