@@ -33,7 +33,7 @@ Generate a Python package project
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/knowsuchagency/python-package-template.git --checkout cloudfoundry
+    cookiecutter https://github.com/mat02/python-package-template.git --checkout cloudfoundry
 
     # answer questions to generate project template
 
